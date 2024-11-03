@@ -17,7 +17,8 @@ public readonly record struct FileOptions
     public bool UseResManager { get; init; }
     public string EmbeddedFilename { get; init; }
     public bool IsValid { get; init; }
-    
+    public bool KeyGeneration { get; init; }
+
     public FileOptions(
         GroupedAdditionalFile groupedFile,
         AnalyzerConfigOptions options,
@@ -129,7 +130,16 @@ public readonly record struct FileOptions
         }
 
         IsValid = globalOptions.IsValid;
-    }
+
+		KeyGeneration = globalOptions.KeyGeneration;
+		if (
+			options.TryGetValue("build_metadata.EmbeddedResource.KeyGeneration", out var keyGenerationSwitch) &&
+			keyGenerationSwitch is { Length: > 0 }
+		)
+		{
+			KeyGeneration=	keyGenerationSwitch.Equals("true", StringComparison.OrdinalIgnoreCase);
+		}
+	}
 
     public static FileOptions Select(
         GroupedAdditionalFile file,

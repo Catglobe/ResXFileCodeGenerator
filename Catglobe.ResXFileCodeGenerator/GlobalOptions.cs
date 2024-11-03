@@ -16,6 +16,7 @@ public sealed record GlobalOptions // this must be a record or implement IEquata
     public string ClassNamePostfix { get; }
     public bool UseResManager { get; }
     public bool IsValid { get; }
+    public bool KeyGeneration { get; }
 
     public GlobalOptions(AnalyzerConfigOptions options)
     {
@@ -104,6 +105,10 @@ public sealed record GlobalOptions // this must be a record or implement IEquata
         {
             UseResManager = true;
         }
+
+        KeyGeneration = options.TryGetValue("build_property.ResXFileCodeGenerator_KeyGeneration", out var keyGenerationSwitch) &&
+                                keyGenerationSwitch is { Length: > 0 } &&
+                                keyGenerationSwitch.Equals("true", StringComparison.OrdinalIgnoreCase);
     }
 
     public static GlobalOptions Select(AnalyzerConfigOptionsProvider provider, CancellationToken token)
