@@ -78,15 +78,12 @@ public class SettingsTests
     [Fact]
     public void FileDefaults()
     {
-        var fileOptions = FileOptions.Select(
-            file: new GroupedAdditionalFile(
-                mainFile: new AdditionalTextWithHash(new AdditionalTextStub("Path1.resx"), Guid.NewGuid()),
-                subFiles: Array.Empty<AdditionalTextWithHash>()
+        var fileOptions = new FileOptions(
+			groupedFile: new ([
+				ResxFile.From(new AdditionalTextStub("Path1.resx"))!
+				]
             ),
-            options: new AnalyzerConfigOptionsProviderStub(
-                globalOptions: null!,
-                fileOptions: new AnalyzerConfigOptionsStub()
-            ),
+            options: new AnalyzerConfigOptionsStub(),
             globalOptions: s_globalOptions
         );
         fileOptions.InnerClassName.ShouldBeNullOrEmpty();
@@ -123,15 +120,12 @@ public class SettingsTests
     {
 	    msBuildProjectFullPath = msBuildProjectFullPath.Replace('\\', Path.DirectorySeparatorChar);
 	    mainFile = mainFile.Replace('\\', Path.DirectorySeparatorChar);
-        var fileOptions = FileOptions.Select(
-            file: new GroupedAdditionalFile(
-                mainFile: new AdditionalTextWithHash(new AdditionalTextStub(mainFile), Guid.NewGuid()),
-                subFiles: Array.Empty<AdditionalTextWithHash>()
-            ),
-            options: new AnalyzerConfigOptionsProviderStub(
-                globalOptions: null!,
-                fileOptions: new AnalyzerConfigOptionsStub()
-            ),
+        var fileOptions = new FileOptions(
+	        groupedFile: new ([
+			        ResxFile.From(new AdditionalTextStub(mainFile))!
+		        ]
+	        ),
+            options: new AnalyzerConfigOptionsStub(),
             globalOptions: GlobalOptions.Select(
                 provider: new AnalyzerConfigOptionsProviderStub(
                     globalOptions: new AnalyzerConfigOptionsStub
@@ -165,15 +159,12 @@ public class SettingsTests
     [Fact]
     public void File_PostFix()
     {
-        var fileOptions = FileOptions.Select(
-            file: new GroupedAdditionalFile(
-                mainFile: new AdditionalTextWithHash(new AdditionalTextStub("Path1.resx"), Guid.NewGuid()),
-                subFiles: Array.Empty<AdditionalTextWithHash>()
-            ),
-            options: new AnalyzerConfigOptionsProviderStub(
-                globalOptions: null!,
-                fileOptions: new AnalyzerConfigOptionsStub { ClassNamePostfix = "test1" }
-            ),
+        var fileOptions = new FileOptions(
+	        groupedFile: new ([
+			        ResxFile.From(new AdditionalTextStub("Path1.resx"))!
+		        ]
+	        ),
+            options: new AnalyzerConfigOptionsStub { ClassNamePostfix = "test1" },
             globalOptions: s_globalOptions
         );
         fileOptions.ClassName.ShouldBe("Path1test1");
@@ -183,14 +174,12 @@ public class SettingsTests
     [Fact]
     public void FileSettings_CanReadAll()
     {
-        var fileOptions = FileOptions.Select(
-            file: new GroupedAdditionalFile(
-                mainFile: new AdditionalTextWithHash(new AdditionalTextStub("Path1.resx"), Guid.NewGuid()),
-                subFiles: Array.Empty<AdditionalTextWithHash>()
-            ),
-            options: new AnalyzerConfigOptionsProviderStub(
-                globalOptions: null!,
-                fileOptions: new AnalyzerConfigOptionsStub
+        var fileOptions = new FileOptions(
+	        groupedFile: new ([
+			        ResxFile.From(new AdditionalTextStub("Path1.resx"))!
+		        ]
+	        ),
+            options: new AnalyzerConfigOptionsStub
                 {
                     RootNamespace = "namespace1", MSBuildProjectFullPath = "project1.csproj",
                     CustomToolNamespace = "ns1",
@@ -203,8 +192,7 @@ public class SettingsTests
                     PublicClass = "true",
                     PartialClass = "true",
                     UseResManager = "true",
-                }
-            ),
+                },
             globalOptions: s_globalOptions
         );
         fileOptions.InnerClassName.ShouldBe("test1");
@@ -247,15 +235,12 @@ public class SettingsTests
             ),
             token: default
         );
-        var fileOptions = FileOptions.Select(
-            file: new GroupedAdditionalFile(
-                mainFile: new AdditionalTextWithHash(new AdditionalTextStub("Path1.resx"), Guid.NewGuid()),
-                subFiles: Array.Empty<AdditionalTextWithHash>()
-            ),
-            options: new AnalyzerConfigOptionsProviderStub(
-                globalOptions: null!,
-                fileOptions: new AnalyzerConfigOptionsStub()
-            ),
+        var fileOptions = new FileOptions(
+	        groupedFile: new ([
+			        ResxFile.From(new AdditionalTextStub("Path1.resx"))!
+		        ]
+	        ),
+            options: new AnalyzerConfigOptionsStub(),
             globalOptions: globalOptions
         );
         fileOptions.InnerClassName.ShouldBe("test1");
@@ -307,59 +292,60 @@ public class SettingsTests
 
         // ReSharper restore InconsistentNaming
 
-        public override bool TryGetValue(string key, [NotNullWhen(true)] out string? value)
+        public override bool TryGetValue(string key, [NotNullWhen(true)] out string value)
         {
-            string? GetVal() =>
-                key switch
-                {
-                    "build_property.MSBuildProjectFullPath" => MSBuildProjectFullPath,
-                    "build_property.MSBuildProjectName" => MSBuildProjectName,
-                    "build_property.RootNamespace" => RootNamespace,
-                    "build_property.ResXFileCodeGenerator_UseResManager" => ResXFileCodeGenerator_UseResManager,
-                    "build_property.ResXFileCodeGenerator_ClassNamePostfix" => ResXFileCodeGenerator_ClassNamePostfix,
-                    "build_property.ResXFileCodeGenerator_PublicClass" => ResXFileCodeGenerator_PublicClass,
-                    "build_property.ResXFileCodeGenerator_NullForgivingOperators" => ResXFileCodeGenerator_NullForgivingOperators,
-                    "build_property.ResXFileCodeGenerator_StaticClass" => ResXFileCodeGenerator_StaticClass,
-                    "build_property.ResXFileCodeGenerator_StaticMembers" => ResXFileCodeGenerator_StaticMembers,
-                    "build_property.ResXFileCodeGenerator_PartialClass" => ResXFileCodeGenerator_PartialClass,
-                    "build_property.ResXFileCodeGenerator_InnerClassVisibility" => ResXFileCodeGenerator_InnerClassVisibility,
-                    "build_property.ResXFileCodeGenerator_InnerClassName" => ResXFileCodeGenerator_InnerClassName,
-                    "build_property.ResXFileCodeGenerator_InnerClassInstanceName" => ResXFileCodeGenerator_InnerClassInstanceName,
-                    "build_metadata.EmbeddedResource.CustomToolNamespace" => CustomToolNamespace,
-                    "build_metadata.EmbeddedResource.TargetPath" => TargetPath,
-                    "build_metadata.EmbeddedResource.ClassNamePostfix" => ClassNamePostfix,
-                    "build_metadata.EmbeddedResource.PublicClass" => PublicClass,
-                    "build_metadata.EmbeddedResource.NullForgivingOperators" => NullForgivingOperators,
-                    "build_metadata.EmbeddedResource.StaticClass" => StaticClass,
-                    "build_metadata.EmbeddedResource.StaticMembers" => StaticMembers,
-                    "build_metadata.EmbeddedResource.PartialClass" => PartialClass,
-                    "build_metadata.EmbeddedResource.InnerClassVisibility" => InnerClassVisibility,
-                    "build_metadata.EmbeddedResource.InnerClassName" => InnerClassName,
-                    "build_metadata.EmbeddedResource.InnerClassInstanceName" => InnerClassInstanceName,
-                    "build_metadata.EmbeddedResource.UseResManager" => UseResManager,
-                    _ => null
-                };
+			var v = GetVal();
+			if (v == null)
+			{
+				value = null!;
+				return false;
+			}
+			value = v;
+	        return true;
 
-            value = GetVal();
-            return value is not null;
+            string? GetVal() =>
+	            key switch
+	            {
+		            "build_property.MSBuildProjectFullPath" => MSBuildProjectFullPath,
+		            "build_property.MSBuildProjectName" => MSBuildProjectName,
+		            "build_property.RootNamespace" => RootNamespace,
+		            "build_property.ResXFileCodeGenerator_UseResManager" => ResXFileCodeGenerator_UseResManager,
+		            "build_property.ResXFileCodeGenerator_ClassNamePostfix" => ResXFileCodeGenerator_ClassNamePostfix,
+		            "build_property.ResXFileCodeGenerator_PublicClass" => ResXFileCodeGenerator_PublicClass,
+		            "build_property.ResXFileCodeGenerator_NullForgivingOperators" => ResXFileCodeGenerator_NullForgivingOperators,
+		            "build_property.ResXFileCodeGenerator_StaticClass" => ResXFileCodeGenerator_StaticClass,
+		            "build_property.ResXFileCodeGenerator_StaticMembers" => ResXFileCodeGenerator_StaticMembers,
+		            "build_property.ResXFileCodeGenerator_PartialClass" => ResXFileCodeGenerator_PartialClass,
+		            "build_property.ResXFileCodeGenerator_InnerClassVisibility" => ResXFileCodeGenerator_InnerClassVisibility,
+		            "build_property.ResXFileCodeGenerator_InnerClassName" => ResXFileCodeGenerator_InnerClassName,
+		            "build_property.ResXFileCodeGenerator_InnerClassInstanceName" => ResXFileCodeGenerator_InnerClassInstanceName,
+		            "build_metadata.EmbeddedResource.CustomToolNamespace" => CustomToolNamespace,
+		            "build_metadata.EmbeddedResource.TargetPath" => TargetPath,
+		            "build_metadata.EmbeddedResource.ClassNamePostfix" => ClassNamePostfix,
+		            "build_metadata.EmbeddedResource.PublicClass" => PublicClass,
+		            "build_metadata.EmbeddedResource.NullForgivingOperators" => NullForgivingOperators,
+		            "build_metadata.EmbeddedResource.StaticClass" => StaticClass,
+		            "build_metadata.EmbeddedResource.StaticMembers" => StaticMembers,
+		            "build_metadata.EmbeddedResource.PartialClass" => PartialClass,
+		            "build_metadata.EmbeddedResource.InnerClassVisibility" => InnerClassVisibility,
+		            "build_metadata.EmbeddedResource.InnerClassName" => InnerClassName,
+		            "build_metadata.EmbeddedResource.InnerClassInstanceName" => InnerClassInstanceName,
+		            "build_metadata.EmbeddedResource.UseResManager" => UseResManager,
+		            _ => null,
+	            };
         }
     }
 
-    private class AnalyzerConfigOptionsProviderStub : AnalyzerConfigOptionsProvider
+    private class AnalyzerConfigOptionsProviderStub(
+	    AnalyzerConfigOptions globalOptions,
+	    AnalyzerConfigOptions fileOptions)
+	    : AnalyzerConfigOptionsProvider
     {
-        private readonly AnalyzerConfigOptions _fileOptions;
-
-        public override AnalyzerConfigOptions GlobalOptions { get; }
-
-        public AnalyzerConfigOptionsProviderStub(AnalyzerConfigOptions globalOptions, AnalyzerConfigOptions fileOptions)
-        {
-            _fileOptions = fileOptions;
-            GlobalOptions = globalOptions;
-        }
+	    public override AnalyzerConfigOptions GlobalOptions { get; } = globalOptions;
 
         public override AnalyzerConfigOptions GetOptions(SyntaxTree tree) => throw new NotImplementedException();
 
-        public override AnalyzerConfigOptions GetOptions(AdditionalText textFile) => _fileOptions;
+        public override AnalyzerConfigOptions GetOptions(AdditionalText textFile) => fileOptions;
 
     }
 }

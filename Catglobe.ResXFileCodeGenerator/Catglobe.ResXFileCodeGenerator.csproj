@@ -9,7 +9,7 @@
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/Catglobe/ResXFileCodeGenerator</PackageProjectUrl>
     <RepositoryUrl>https://github.com/Catglobe/ResXFileCodeGenerator</RepositoryUrl>
-    <Description>ResX Designer Source Generator.</Description>
+    <Description>Converts Resx files into ultra fast runtime lookups using Source Generator.</Description>
     <IncludeBuildOutput>false</IncludeBuildOutput>
     <IncludeSymbols>false</IncludeSymbols>
     <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>

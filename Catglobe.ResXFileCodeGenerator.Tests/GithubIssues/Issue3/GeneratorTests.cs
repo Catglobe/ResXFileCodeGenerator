@@ -80,8 +80,8 @@ public class GeneratorTests
 // ------------------------------------------------------------------------------
 #nullable enable
 namespace Catglobe.Web.App_GlobalResources;
-using System.Globalization;
-using System.Resources;
+using global::System.Globalization;
+using global::System.Resources;
 
 public static class CommonMessages
 {
@@ -102,10 +102,9 @@ public static class CommonMessages
 				LocalNamespace = "Catglobe.Web.App_GlobalResources",
 				EmbeddedFilename = "Catglobe.Web.App_GlobalResources.CommonMessages",
 				CustomToolNamespace = null,
-				GroupedFile = new GroupedAdditionalFile(
-					mainFile: new AdditionalTextWithHash(new AdditionalTextStub("", text), NewGuid()),
-					subFiles: Array.Empty<AdditionalTextWithHash>()
-				),
+				GroupedFile = new([
+					ResxFile.From(new AdditionalTextStub("test.resx", text))!,
+				]),
 				ClassName = "CommonMessages",
 				PublicClass = true,
 				NullForgivingOperators = false,
@@ -193,17 +192,15 @@ public static class CommonMessages
 			LocalNamespace = "Catglobe.Web.App_GlobalResources",
 			CustomToolNamespace = "Resources",
 			ClassName = "ActivityEntrySortRuleNames",
-			GroupedFile = new GroupedAdditionalFile(
-				mainFile: new AdditionalTextWithHash(new AdditionalTextStub("", text), NewGuid()),
-				subFiles: Array.Empty<AdditionalTextWithHash>()
-			),
+			GroupedFile = new([
+				ResxFile.From(new AdditionalTextStub("test.resx", text))!,
+			]),
 			PublicClass = true,
 			NullForgivingOperators = false,
 			StaticClass = true
 		};
-		Should.Throw<XmlException>(() =>
-		{
-			generator.Generate(options);
-		});
+		var (_, _, errorsAndWarnings) = generator.Generate(options);
+		errorsAndWarnings.ShouldNotBeNull().ShouldNotBeEmpty();
+		errorsAndWarnings.ShouldNotBeNull().ShouldAllBe(x => x.Severity == DiagnosticSeverity.Error);
 	}
 }

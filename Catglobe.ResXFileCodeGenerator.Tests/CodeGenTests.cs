@@ -247,14 +247,12 @@ using static Catglobe.ResXFileCodeGenerator.Helpers;
                 EmbeddedFilename = "Catglobe.Web.App_GlobalResources.ActivityEntrySortRuleNames",
                 CustomToolNamespace = "Resources",
                 ClassName = "ActivityEntrySortRuleNames",
-                GroupedFile = new GroupedAdditionalFile(
-                    mainFile: new AdditionalTextWithHash(new AdditionalTextStub(string.Empty, Text), NewGuid()),
-                    subFiles: new[]
-                    {
-                        new AdditionalTextWithHash(new AdditionalTextStub("test.da.rex", TextDa), NewGuid()),
-                        new AdditionalTextWithHash(new AdditionalTextStub("test.da-dk.rex", TextDaDk), NewGuid()),
-                    }
-                ),
+				//make random to test sorting
+				GroupedFile = new(new[]{
+	                ResxFile.From(new AdditionalTextStub("test.resx", Text))!,
+	                ResxFile.From(new AdditionalTextStub("test.da.resx", TextDa))!,
+	                ResxFile.From(new AdditionalTextStub("test.da-dk.resx", TextDaDk))!,
+                }.OrderBy(_=>NewGuid()).ToList()),
                 PublicClass = publicClass,
                 UseResManager = true,
                 NullForgivingOperators = nullForgivingOperators,

@@ -89,8 +89,8 @@ public class GeneratorTests
 // ------------------------------------------------------------------------------
 #nullable enable
 namespace Resources;
-using System.Globalization;
-using System.Resources;
+using global::System.Globalization;
+using global::System.Resources;
 
 {(publicClass ? "public" : "internal")}{(staticClass ? " static" : string.Empty)}{(partial ? " partial" : string.Empty)} class ActivityEntrySortRuleNames
 {{
@@ -116,10 +116,9 @@ using System.Resources;
                 EmbeddedFilename = "Catglobe.Web.App_GlobalResources.ActivityEntrySortRuleNames",
                 CustomToolNamespace = "Resources",
                 ClassName = "ActivityEntrySortRuleNames",
-                GroupedFile = new GroupedAdditionalFile(
-                    mainFile: new AdditionalTextWithHash(new AdditionalTextStub("", Text), NewGuid()),
-                    subFiles: Array.Empty<AdditionalTextWithHash>()
-                ),
+                GroupedFile = new([
+	                ResxFile.From(new AdditionalTextStub("test.resx", Text))!,
+                ]),
                 PublicClass = publicClass,
                 NullForgivingOperators = nullForgivingOperators,
                 StaticClass = staticClass,
@@ -153,8 +152,8 @@ using System.Resources;
 // ------------------------------------------------------------------------------
 #nullable enable
 namespace Resources;
-using System.Globalization;
-using System.Resources;
+using global::System.Globalization;
+using global::System.Resources;
 
 {(publicClass ? "public" : "internal")}{(partial ? " partial" : string.Empty)}{(staticClass ? " static" : string.Empty)} class ActivityEntrySortRuleNames
 {{{(string.IsNullOrEmpty(innerClassInstanceName) ? string.Empty : $"\n    public {innerClassName} {innerClassInstanceName} {{ get; }} = new();\n")}
@@ -185,10 +184,9 @@ using System.Resources;
                 ClassName = "ActivityEntrySortRuleNames",
                 PublicClass = publicClass,
                 NullForgivingOperators = nullForgivingOperators,
-                GroupedFile = new GroupedAdditionalFile(
-                    mainFile: new AdditionalTextWithHash(new AdditionalTextStub("", Text), NewGuid()),
-                    subFiles: Array.Empty<AdditionalTextWithHash>()
-                ),
+                GroupedFile = new([
+	                ResxFile.From(new AdditionalTextStub("test.resx", Text))!,
+                ]),
                 StaticClass = staticClass,
                 PartialClass = partial,
                 StaticMembers = staticMembers,
@@ -408,8 +406,8 @@ Approved = The entry has been inspected and approved by a trusted user. Approved
 // ------------------------------------------------------------------------------
 #nullable enable
 namespace Catglobe.Web.App_GlobalResources;
-using System.Globalization;
-using System.Resources;
+using global::System.Globalization;
+using global::System.Resources;
 
 public static class CommonMessages
 {
@@ -458,10 +456,9 @@ public static class CommonMessages
                 EmbeddedFilename = "Catglobe.Web.App_GlobalResources.CommonMessages",
                 CustomToolNamespace = null,
                 ClassName = "CommonMessages",
-                GroupedFile = new GroupedAdditionalFile(
-                    mainFile: new AdditionalTextWithHash(new AdditionalTextStub("", text), NewGuid()),
-                    subFiles: Array.Empty<AdditionalTextWithHash>()
-                ),
+                GroupedFile = new([
+	                ResxFile.From(new AdditionalTextStub("test.resx", text))!,
+                ]),
                 PublicClass = true,
                 NullForgivingOperators = false,
                 StaticClass = true,
@@ -492,8 +489,8 @@ public static class CommonMessages
 // ------------------------------------------------------------------------------
 #nullable enable
 namespace Catglobe.Web.App_GlobalResources;
-using System.Globalization;
-using System.Resources;
+using global::System.Globalization;
+using global::System.Resources;
 
 public static class CommonMessages
 {
@@ -514,10 +511,9 @@ public static class CommonMessages
                 LocalNamespace = "Catglobe.Web.App_GlobalResources",
                 EmbeddedFilename = "Catglobe.Web.App_GlobalResources.CommonMessages",
                 CustomToolNamespace = null,
-                GroupedFile = new GroupedAdditionalFile(
-                    mainFile: new AdditionalTextWithHash(new AdditionalTextStub("", text), NewGuid()),
-                    subFiles: Array.Empty<AdditionalTextWithHash>()
-                ),
+                GroupedFile = new([
+	                ResxFile.From(new AdditionalTextStub("test.resx", text))!,
+                ]),
                 ClassName = "CommonMessages",
                 PublicClass = true,
                 NullForgivingOperators = false,
@@ -548,10 +544,9 @@ public static class CommonMessages
             {
                 LocalNamespace = "Catglobe.Web.App_GlobalResources",
                 EmbeddedFilename = "Catglobe.Web.App_GlobalResources.CommonMessages",
-                GroupedFile = new GroupedAdditionalFile(
-                    mainFile: new AdditionalTextWithHash(new AdditionalTextStub("", text), NewGuid()),
-                    subFiles: Array.Empty<AdditionalTextWithHash>()
-                ),
+                GroupedFile = new([
+	                ResxFile.From(new AdditionalTextStub("test.resx", text))!,
+                ]),
                 CustomToolNamespace = null,
                 ClassName = "CommonMessages",
                 PublicClass = true,
@@ -584,10 +579,9 @@ public static class CommonMessages
             {
                 LocalNamespace = "Catglobe.Web.App_GlobalResources",
                 EmbeddedFilename = "Catglobe.Web.App_GlobalResources.CommonMessages",
-                GroupedFile = new GroupedAdditionalFile(
-                    mainFile: new AdditionalTextWithHash(new AdditionalTextStub("", text), NewGuid()),
-                    subFiles: Array.Empty<AdditionalTextWithHash>()
-                ),
+                GroupedFile = new([
+	                ResxFile.From(new AdditionalTextStub("test.resx", text))!,
+                ]),
                 CustomToolNamespace = null,
                 ClassName = "CommonMessages",
                 PublicClass = true,
@@ -611,10 +605,4 @@ public static class CommonMessages
         ns.ShouldBe("root");
     }
 
-    [Fact]
-    public void ResxFileName_ShouldNotGenerateIllegalClassnames()
-    {
-        var ns = Utilities.GetClassNameFromPath("test.cshtml.resx");
-        ns.ShouldBe("test");
-    }
 }

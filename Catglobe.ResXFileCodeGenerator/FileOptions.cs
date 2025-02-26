@@ -1,36 +1,39 @@
 ﻿namespace Catglobe.ResXFileCodeGenerator;
 
-public readonly record struct FileOptions 
+internal sealed record FileOptions 
 {
-    public string InnerClassInstanceName { get; init; }
-    public string InnerClassName { get; init; }
-    public InnerClassVisibility InnerClassVisibility { get; init; }
+	public ResxGroup GroupedFile { get; init; } = null!;
+	public string InnerClassInstanceName { get; init; } = string.Empty;
+    public string InnerClassName { get; init; } = string.Empty;
+    public InnerClassVisibility InnerClassVisibility { get; init; } = InnerClassVisibility.NotGenerated;
     public bool PartialClass { get; init; }
     public bool StaticMembers { get; init; } = true;
-    public GroupedAdditionalFile GroupedFile { get; init; }
     public bool StaticClass { get; init; }
     public bool NullForgivingOperators { get; init; }
     public bool PublicClass { get; init; }
-    public string ClassName { get; init; }
+    public string ClassName { get; init; } = null!;
     public string? CustomToolNamespace { get; init; }
-    public string LocalNamespace { get; init; }
+    public string LocalNamespace { get; init; } = null!;
     public bool UseResManager { get; init; }
-    public string EmbeddedFilename { get; init; }
-    public bool IsValid { get; init; }
-    
-    public FileOptions(
-        GroupedAdditionalFile groupedFile,
+    public string EmbeddedFilename { get; init; } = null!;
+    public bool IsValid { get; init; } = true;
+
+	//unittest
+    internal FileOptions() { }
+
+    internal FileOptions(
+        ResxGroup groupedFile,
         AnalyzerConfigOptions options,
         GlobalOptions globalOptions
     )
     {
         GroupedFile = groupedFile;
-        var resxFilePath = groupedFile.MainFile.File.Path;
+        var basename = groupedFile.Basename;
 
-        var classNameFromFileName = Utilities.GetClassNameFromPath(resxFilePath);
+        var classNameFromFileName = Path.GetFileName(basename);
 
         var detectedNamespace = Utilities.GetLocalNamespace(
-            resxFilePath,
+	        basename,
             options.TryGetValue("build_metadata.EmbeddedResource.Link", out var link) &&
             link is { Length: > 0 }
                 ? link
@@ -45,7 +48,7 @@ public readonly record struct FileOptions
             options.TryGetValue("build_metadata.EmbeddedResource.TargetPath", out var targetPath) &&
             targetPath is { Length: > 0 }
                 ? Utilities.GetLocalNamespace(
-                    resxFilePath, targetPath,
+	                basename, targetPath,
                     globalOptions.ProjectFullPath,
                     globalOptions.ProjectName,
                     globalOptions.RootNamespace)
@@ -129,18 +132,5 @@ public readonly record struct FileOptions
         }
 
         IsValid = globalOptions.IsValid;
-    }
-
-    public static FileOptions Select(
-        GroupedAdditionalFile file,
-        AnalyzerConfigOptionsProvider options,
-        GlobalOptions globalOptions
-    )
-    {
-        return new FileOptions(
-            groupedFile: file,
-            options: options.GetOptions(file.MainFile.File),
-            globalOptions: globalOptions
-        );
     }
 }

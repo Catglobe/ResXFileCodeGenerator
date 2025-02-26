@@ -32,9 +32,9 @@
 	  <EmbeddedResource Update="**/*.??.resx;**/*.??-??.resx">
 		  <DependentUpon>$([System.IO.Path]::GetFileNameWithoutExtension('%(FileName)')).resx</DependentUpon>
 	  </EmbeddedResource>
-    <EmbeddedResource Update="IntegrationTests\Test2.resx">
-	    <UseResManager>true</UseResManager>
-    </EmbeddedResource>
+	  <EmbeddedResource Update="IntegrationTests\Test2.resx">
+		  <UseResManager>true</UseResManager>
+	  </EmbeddedResource>
   </ItemGroup>
 
 	<ItemGroup>

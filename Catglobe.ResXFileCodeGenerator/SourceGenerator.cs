@@ -1,53 +1,104 @@
-﻿namespace Catglobe.ResXFileCodeGenerator;
+﻿using System.Runtime.CompilerServices;
+
+[assembly:InternalsVisibleTo("Catglobe.ResXFileCodeGenerator.Tests")]
+
+namespace Catglobe.ResXFileCodeGenerator;
 
 [Generator]
 public class SourceGenerator : IIncrementalGenerator
 {
-    private static readonly IGenerator s_generator = new StringBuilderGenerator();
-    
-    public void Initialize(IncrementalGeneratorInitializationContext context)
-    {
-        var globalOptions = context.AnalyzerConfigOptionsProvider.Select(GlobalOptions.Select);
+	private static readonly IGenerator s_generator = new StringBuilderGenerator();
 
-        // Note: Each Resx file will get a hash (random guid) so we can easily differentiate in the pipeline when the file changed or just some options
-        var allResxFiles = context.AdditionalTextsProvider.Where(static af => af.Path.EndsWith(".resx"))
-            .Select(static (f, _) => new AdditionalTextWithHash(f, Guid.NewGuid()));
-        
-        var monitor = allResxFiles.Collect().SelectMany(static (x, _) => GroupResxFiles.Group(x));
-        
-        var inputs = monitor
-            .Combine(globalOptions)
-            .Combine(context.AnalyzerConfigOptionsProvider)
-            .Select(static (x, _) => FileOptions.Select(
-                file: x.Left.Left,
-                options: x.Right,
-                globalOptions: x.Left.Right
-            ))
-            .Where(static x => x.IsValid);
+	public void Initialize(IncrementalGeneratorInitializationContext context)
+	{
+		var globalOptions = context.AnalyzerConfigOptionsProvider.Select(GlobalOptions.Select);
 
-        context.RegisterSourceOutput(inputs, (ctx, file) =>
-        {
-            var (generatedFileName, sourceCode, errorsAndWarnings) =
-                s_generator.Generate(file, ctx.CancellationToken);
-            foreach (var sourceErrorsAndWarning in errorsAndWarnings)
-            {
-                ctx.ReportDiagnostic(sourceErrorsAndWarning);
-            }
+		var allResxFiles = context.AdditionalTextsProvider
+			.Where(static af => af.Path.EndsWith(".resx", StringComparison.OrdinalIgnoreCase))
+			.Select(ResxFile.From)
+			.Where(x => x is not null);
 
-            ctx.AddSource(generatedFileName, sourceCode);
-        });
+		var monitor = allResxFiles.Collect().SelectMany(static (x, _) => GroupResxFiles.Group(x));
+		
+		var inputs = monitor.Where(x=>x.Error is null)
+			.Combine(globalOptions.Combine(context.AnalyzerConfigOptionsProvider))
+			.Select(static (x, _) =>
+			{
+				var (resourceGroup, (globalOptions, fileOptionsProvider)) = x;
+				return new FileOptions(
+					groupedFile: resourceGroup,
+					options: fileOptionsProvider.GetOptions(resourceGroup.MainFile.File),
+					globalOptions: globalOptions
+				);
+			});
 
-        var detectAllCombosOfResx = monitor.Collect().SelectMany((x, _) => GroupResxFiles.DetectChildCombos(x));
-        context.RegisterSourceOutput(detectAllCombosOfResx, (ctx, combo) =>
-        {
-            var (generatedFileName, sourceCode, errorsAndWarnings) =
-                s_generator.Generate(combo, ctx.CancellationToken);
-            foreach (var sourceErrorsAndWarning in errorsAndWarnings)
-            {
-                ctx.ReportDiagnostic(sourceErrorsAndWarning);
-            }
+		context.RegisterSourceOutput(monitor.Where(x=>x.Error is not null), (ctx, file) =>
+		{
+			ctx.ReportDiagnostic(file.Error!);
+		});
 
-            ctx.AddSource(generatedFileName, sourceCode);
-        });
-    }
+		context.RegisterSourceOutput(inputs, (ctx, file) =>
+		{
+			var (generatedFileName, sourceCode, errorsAndWarnings) =
+				s_generator.Generate(file, ctx.CancellationToken);
+			foreach (var sourceErrorsAndWarning in errorsAndWarnings)
+			{
+				ctx.ReportDiagnostic(sourceErrorsAndWarning);
+			}
+
+			ctx.AddSource(generatedFileName, sourceCode);
+		});
+
+		var detectAllCombosOfResx = monitor.Collect().SelectMany((x, _) => GroupResxFiles.DetectChildCombos(x));
+		context.RegisterSourceOutput(detectAllCombosOfResx, (ctx, combo) =>
+		{
+			var (generatedFileName, sourceCode, errorsAndWarnings) =
+				s_generator.Generate(combo, ctx.CancellationToken);
+			foreach (var sourceErrorsAndWarning in errorsAndWarnings)
+			{
+				ctx.ReportDiagnostic(sourceErrorsAndWarning);
+			}
+
+			ctx.AddSource(generatedFileName, sourceCode);
+		});
+	}
+
+	private sealed class
+		ImmutableDictionaryEqualityComparer<TKey, TValue> : IEqualityComparer<ImmutableDictionary<TKey, TValue>?>
+		where TKey : notnull
+	{
+		public static readonly ImmutableDictionaryEqualityComparer<TKey, TValue> Instance = new();
+
+		public bool Equals(ImmutableDictionary<TKey, TValue>? x, ImmutableDictionary<TKey, TValue>? y)
+		{
+			if (ReferenceEquals(x, y))
+				return true;
+
+			if (x is null || y is null)
+				return false;
+
+			if (!Equals(x.KeyComparer, y.KeyComparer))
+				return false;
+
+			if (!Equals(x.ValueComparer, y.ValueComparer))
+				return false;
+
+			foreach (var kvp in x)
+			{
+				var (key, value) = (kvp.Key, kvp.Value);
+				if (!y.TryGetValue(key, out var other)
+				    || !x.ValueComparer.Equals(value, other))
+				{
+					return false;
+				}
+			}
+
+			return true;
+		}
+
+		public int GetHashCode(ImmutableDictionary<TKey, TValue>? obj)
+		{
+			return obj?.Count ?? 0;
+		}
+	}
 }

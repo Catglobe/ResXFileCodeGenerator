@@ -1,28 +1,22 @@
 ﻿namespace Catglobe.ResXFileCodeGenerator;
 
-public sealed partial class StringBuilderGenerator : IGenerator
+internal sealed partial class StringBuilderGenerator : IGenerator
 {
     private void GenerateResourceManager(
-        FileOptions options,
-        SourceText content,
-        string indent,
-        string containerClassName,
-        StringBuilder builder,
-        List<Diagnostic> errorsAndWarnings,
-        CancellationToken cancellationToken
-    )
+	    (Dictionary<string, (string, IXmlLineInfo)> main, List<Dictionary<string, (string, IXmlLineInfo)>> subfiles)
+		    parsed, FileOptions options,
+	    string indent,
+	    string containerClassName,
+	    StringBuilder builder,
+	    List<Diagnostic> errorsAndWarnings,
+	    CancellationToken cancellationToken)
     {
         GenerateResourceManagerMembers(builder, indent, containerClassName, options);
 
-        var members = ReadResxFile(content);
-        if (members is null)
+        var (fallback, _) = parsed;
+        foreach (var kvp in fallback)
         {
-            return;
-        }
-
-        var alreadyAddedMembers = new HashSet<string>() { Constants.CultureInfoVariable };
-        foreach (var (key, value, line) in members)
-        {
+	        var (key, line, value) = (kvp.Key, kvp.Value.Item2, kvp.Value.Item1);
             cancellationToken.ThrowIfCancellationRequested();
             CreateMember(
                 indent,
@@ -31,7 +25,6 @@ public sealed partial class StringBuilderGenerator : IGenerator
                 key,
                 value,
                 line,
-                alreadyAddedMembers,
                 errorsAndWarnings,
                 containerClassName
             );
@@ -45,12 +38,11 @@ public sealed partial class StringBuilderGenerator : IGenerator
         string name,
         string value,
         IXmlLineInfo line,
-        HashSet<string> alreadyAddedMembers,
         List<Diagnostic> errorsAndWarnings,
         string containerclassname
     )
     {
-        if (!GenerateMember(indent, builder, options, name, value, line, alreadyAddedMembers, errorsAndWarnings, containerclassname, out var resourceAccessByName))
+        if (!GenerateMember(indent, builder, options, name, value, line, errorsAndWarnings, containerclassname, out var resourceAccessByName))
         {
             return;
         }
