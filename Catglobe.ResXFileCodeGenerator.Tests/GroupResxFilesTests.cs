@@ -1,8 +1,4 @@
-﻿using FluentAssertions;
-using Xunit;
-using static System.Guid;
-
-namespace Catglobe.ResXFileCodeGenerator.Tests;
+﻿namespace Catglobe.ResXFileCodeGenerator.Tests;
 
 public class GroupResxFilesTests
 {
@@ -26,7 +22,7 @@ public class GroupResxFilesTests
                 new AdditionalTextWithHash(new AdditionalTextStub(@"D:\src\xhg\y\Areas\CaModule\Pages\IdfgControlCenter.da.resx"), Parse("B7EDA261-6923-4526-AFB7-B2A64984F099")),
             }
         );
-        v1.Should().Be(v2);
+        v1.ShouldBe(v2);
     }
 
     [Fact]
@@ -49,7 +45,7 @@ public class GroupResxFilesTests
                 new AdditionalTextWithHash(new AdditionalTextStub(@"D:\src\xhg\y\Areas\CaModule\Pages\IdfgControlCenter.ro.resx"), Parse("B7EDA261-6923-4526-AFB7-B2A64984F099")),
             }
         );
-        v1.Should().NotBe(v2);
+        v1.ShouldNotBe(v2);
     }
 
     [Fact]
@@ -72,7 +68,7 @@ public class GroupResxFilesTests
                 new AdditionalTextWithHash(new AdditionalTextStub(@"D:\src\xhg\y\Areas\CaModule\Pages\IdfgControlCenter.da.resx"), Parse("B7EDA261-6923-4526-AFB7-B2A64984F099")),
             }
         );
-        v1.Should().NotBe(v2);
+        v1.ShouldNotBe(v2);
     }
 
     [Fact]
@@ -95,7 +91,7 @@ public class GroupResxFilesTests
                 new AdditionalTextWithHash(new AdditionalTextStub(@"D:\src\xhg\y\Areas\CaModule\Pages\IdfgControlCenter.da.resx"), Parse("B7EDA261-6923-4526-AFB7-B2A64984F099")),
             }
         );
-        v1.Should().NotBe(v2);
+        v1.ShouldNotBe(v2);
     }
 
     static readonly (string Path, Guid Hash)[] s_data =
@@ -211,10 +207,10 @@ public class GroupResxFilesTests
             )
         };
         var resAsList = result.ToList();
-        resAsList.Count.Should().Be(testData.Count);
+        resAsList.Count.ShouldBe(testData.Count);
         foreach (var groupedAdditionalFile in testData)
         {
-            resAsList.Should().Contain(groupedAdditionalFile);
+            resAsList.ShouldContain(groupedAdditionalFile);
         }
     }
 

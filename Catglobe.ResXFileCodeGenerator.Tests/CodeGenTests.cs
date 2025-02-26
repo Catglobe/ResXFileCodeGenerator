@@ -1,8 +1,4 @@
-﻿using FluentAssertions;
-using Xunit;
-using static System.Guid;
-
-namespace Catglobe.ResXFileCodeGenerator.Tests;
+﻿namespace Catglobe.ResXFileCodeGenerator.Tests;
 
 public class CodeGenTests
 {
@@ -267,8 +263,8 @@ using static Catglobe.ResXFileCodeGenerator.Helpers;
                 StaticMembers = staticMembers
             }
         );
-        ErrorsAndWarnings.Should().BeNullOrEmpty();
-        SourceCode.ReplaceLineEndings().Should().Be(expected.ReplaceLineEndings());
+        ErrorsAndWarnings.ShouldBeEmpty();
+        SourceCode.ReplaceLineEndings().ShouldBe(expected.ReplaceLineEndings());
     }
 
 

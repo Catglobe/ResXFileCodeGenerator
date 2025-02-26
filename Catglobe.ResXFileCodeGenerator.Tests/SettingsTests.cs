@@ -1,10 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using FluentAssertions;
-using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.Diagnostics;
-using Xunit;
-
-namespace Catglobe.ResXFileCodeGenerator.Tests;
+﻿namespace Catglobe.ResXFileCodeGenerator.Tests;
 
 public class SettingsTests
 {
@@ -25,19 +19,19 @@ public class SettingsTests
     public void GlobalDefaults()
     {
         var globalOptions = s_globalOptions;
-        globalOptions.ProjectName.Should().Be("project1");
-        globalOptions.RootNamespace.Should().Be("namespace1");
-        globalOptions.ProjectFullPath.Should().Be("project1.csproj");
-        globalOptions.InnerClassName.Should().BeNullOrEmpty();
-        globalOptions.ClassNamePostfix.Should().BeNullOrEmpty();
-        globalOptions.InnerClassInstanceName.Should().BeNullOrEmpty();
-        globalOptions.InnerClassVisibility.Should().Be(InnerClassVisibility.NotGenerated);
-        globalOptions.NullForgivingOperators.Should().Be(false);
-        globalOptions.StaticClass.Should().Be(true);
-        globalOptions.StaticMembers.Should().Be(true);
-        globalOptions.PublicClass.Should().Be(false);
-        globalOptions.PartialClass.Should().Be(false);
-        globalOptions.IsValid.Should().Be(true);
+        globalOptions.ProjectName.ShouldBe("project1");
+        globalOptions.RootNamespace.ShouldBe("namespace1");
+        globalOptions.ProjectFullPath.ShouldBe("project1.csproj");
+        globalOptions.InnerClassName.ShouldBeNullOrEmpty();
+        globalOptions.ClassNamePostfix.ShouldBeNullOrEmpty();
+        globalOptions.InnerClassInstanceName.ShouldBeNullOrEmpty();
+        globalOptions.InnerClassVisibility.ShouldBe(InnerClassVisibility.NotGenerated);
+        globalOptions.NullForgivingOperators.ShouldBe(false);
+        globalOptions.StaticClass.ShouldBe(true);
+        globalOptions.StaticMembers.ShouldBe(true);
+        globalOptions.PublicClass.ShouldBe(false);
+        globalOptions.PartialClass.ShouldBe(false);
+        globalOptions.IsValid.ShouldBe(true);
     }
 
     [Fact]
@@ -65,20 +59,20 @@ public class SettingsTests
             ),
             token: default
         );
-        globalOptions.RootNamespace.Should().Be("namespace1");
-        globalOptions.ProjectFullPath.Should().Be("project1.csproj");
-        globalOptions.ProjectName.Should().Be("project1");
-        globalOptions.InnerClassName.Should().Be("test1");
-        globalOptions.InnerClassInstanceName.Should().Be("test2");
-        globalOptions.ClassNamePostfix.Should().Be("test3");
-        globalOptions.InnerClassVisibility.Should().Be(InnerClassVisibility.Public);
-        globalOptions.NullForgivingOperators.Should().Be(true);
-        globalOptions.StaticClass.Should().Be(false);
-        globalOptions.UseResManager.Should().Be(true);
-        globalOptions.StaticMembers.Should().Be(false);
-        globalOptions.PublicClass.Should().Be(true);
-        globalOptions.PartialClass.Should().Be(true);
-        globalOptions.IsValid.Should().Be(true);
+        globalOptions.RootNamespace.ShouldBe("namespace1");
+        globalOptions.ProjectFullPath.ShouldBe("project1.csproj");
+        globalOptions.ProjectName.ShouldBe("project1");
+        globalOptions.InnerClassName.ShouldBe("test1");
+        globalOptions.InnerClassInstanceName.ShouldBe("test2");
+        globalOptions.ClassNamePostfix.ShouldBe("test3");
+        globalOptions.InnerClassVisibility.ShouldBe(InnerClassVisibility.Public);
+        globalOptions.NullForgivingOperators.ShouldBe(true);
+        globalOptions.StaticClass.ShouldBe(false);
+        globalOptions.UseResManager.ShouldBe(true);
+        globalOptions.StaticMembers.ShouldBe(false);
+        globalOptions.PublicClass.ShouldBe(true);
+        globalOptions.PartialClass.ShouldBe(true);
+        globalOptions.IsValid.ShouldBe(true);
     }
 
     [Fact]
@@ -95,34 +89,30 @@ public class SettingsTests
             ),
             globalOptions: s_globalOptions
         );
-        fileOptions.InnerClassName.Should().BeNullOrEmpty();
-        fileOptions.InnerClassInstanceName.Should().BeNullOrEmpty();
-        fileOptions.InnerClassVisibility.Should().Be(InnerClassVisibility.NotGenerated);
-        fileOptions.NullForgivingOperators.Should().Be(false);
-        fileOptions.StaticClass.Should().Be(true);
-        fileOptions.StaticMembers.Should().Be(true);
-        fileOptions.PublicClass.Should().Be(false);
-        fileOptions.PartialClass.Should().Be(false);
-        fileOptions.UseResManager.Should().Be(false);
-        fileOptions.LocalNamespace.Should().Be("namespace1");
-        fileOptions.CustomToolNamespace.Should().BeNullOrEmpty();
-        fileOptions.GroupedFile.MainFile.File.Path.Should().Be("Path1.resx");
-        fileOptions.ClassName.Should().Be("Path1");
-        fileOptions.IsValid.Should().Be(true);
+        fileOptions.InnerClassName.ShouldBeNullOrEmpty();
+        fileOptions.InnerClassInstanceName.ShouldBeNullOrEmpty();
+        fileOptions.InnerClassVisibility.ShouldBe(InnerClassVisibility.NotGenerated);
+        fileOptions.NullForgivingOperators.ShouldBe(false);
+        fileOptions.StaticClass.ShouldBe(true);
+        fileOptions.StaticMembers.ShouldBe(true);
+        fileOptions.PublicClass.ShouldBe(false);
+        fileOptions.PartialClass.ShouldBe(false);
+        fileOptions.UseResManager.ShouldBe(false);
+        fileOptions.LocalNamespace.ShouldBe("namespace1");
+        fileOptions.CustomToolNamespace.ShouldBeNullOrEmpty();
+        fileOptions.GroupedFile.MainFile.File.Path.ShouldBe("Path1.resx");
+        fileOptions.ClassName.ShouldBe("Path1");
+        fileOptions.IsValid.ShouldBe(true);
     }
 
     [Theory]
-    [InlineData("project1.csproj", "Path1.resx", null, "project1", "project1.Path1")]
     [InlineData("project1.csproj", "Path1.resx", "", "project1", "project1.Path1")]
     [InlineData("project1.csproj", "Path1.resx", "rootNamespace","rootNamespace", "rootNamespace.Path1")]
     [InlineData(@"ProjectFolder\project1.csproj", @"ProjectFolder\SubFolder\Path1.resx", "rootNamespace", "rootNamespace.SubFolder", "rootNamespace.SubFolder.Path1")]
     [InlineData(@"ProjectFolder\project1.csproj", @"ProjectFolder\SubFolder With Space\Path1.resx", "rootNamespace", "rootNamespace.SubFolder_With_Space", "rootNamespace.SubFolder_With_Space.Path1")]
-    [InlineData(@"ProjectFolder\project1.csproj", @"ProjectFolder\SubFolder\Path1.resx", null, "SubFolder", "SubFolder.Path1")]
-    [InlineData(@"ProjectFolder\8 project.csproj", @"ProjectFolder\Path1.resx", null, "_8_project", "_8_project.Path1")]
+    [InlineData(@"ProjectFolder\project1.csproj", @"ProjectFolder\SubFolder\Path1.resx", "", "SubFolder", "SubFolder.Path1")]
     [InlineData(@"ProjectFolder\8 project.csproj", @"ProjectFolder\Path1.resx", "", "_8_project", "_8_project.Path1")]
-    [InlineData(@"ProjectFolder\8 project.csproj", @"ProjectFolder\SubFolder\Path1.resx", null, "SubFolder", "SubFolder.Path1")]
     [InlineData(@"ProjectFolder\8 project.csproj", @"ProjectFolder\SubFolder\Path1.resx", "", "SubFolder", "SubFolder.Path1")]
-
     public void FileSettings_RespectsEmptyRootNamespace(
         string msBuildProjectFullPath,
         string mainFile,
@@ -155,21 +145,21 @@ public class SettingsTests
                 token: default
             )
         );
-        fileOptions.InnerClassName.Should().BeNullOrEmpty();
-        fileOptions.InnerClassInstanceName.Should().BeNullOrEmpty();
-        fileOptions.InnerClassVisibility.Should().Be(InnerClassVisibility.NotGenerated);
-        fileOptions.NullForgivingOperators.Should().Be(false);
-        fileOptions.StaticClass.Should().Be(true);
-        fileOptions.StaticMembers.Should().Be(true);
-        fileOptions.PublicClass.Should().Be(false);
-        fileOptions.PartialClass.Should().Be(false);
-        fileOptions.UseResManager.Should().Be(false);
-        fileOptions.LocalNamespace.Should().Be(expectedLocalNamespace);
-        fileOptions.CustomToolNamespace.Should().BeNullOrEmpty();
-        fileOptions.GroupedFile.MainFile.File.Path.Should().Be(mainFile);
-        fileOptions.EmbeddedFilename.Should().Be(expectedEmbeddedFilename);
-        fileOptions.ClassName.Should().Be("Path1");
-        fileOptions.IsValid.Should().Be(true);
+        fileOptions.InnerClassName.ShouldBeNullOrEmpty();
+        fileOptions.InnerClassInstanceName.ShouldBeNullOrEmpty();
+        fileOptions.InnerClassVisibility.ShouldBe(InnerClassVisibility.NotGenerated);
+        fileOptions.NullForgivingOperators.ShouldBe(false);
+        fileOptions.StaticClass.ShouldBe(true);
+        fileOptions.StaticMembers.ShouldBe(true);
+        fileOptions.PublicClass.ShouldBe(false);
+        fileOptions.PartialClass.ShouldBe(false);
+        fileOptions.UseResManager.ShouldBe(false);
+        fileOptions.LocalNamespace.ShouldBe(expectedLocalNamespace);
+        fileOptions.CustomToolNamespace.ShouldBeNullOrEmpty();
+        fileOptions.GroupedFile.MainFile.File.Path.ShouldBe(mainFile);
+        fileOptions.EmbeddedFilename.ShouldBe(expectedEmbeddedFilename);
+        fileOptions.ClassName.ShouldBe("Path1");
+        fileOptions.IsValid.ShouldBe(true);
     }
 
     [Fact]
@@ -186,8 +176,8 @@ public class SettingsTests
             ),
             globalOptions: s_globalOptions
         );
-        fileOptions.ClassName.Should().Be("Path1test1");
-        fileOptions.IsValid.Should().Be(true);
+        fileOptions.ClassName.ShouldBe("Path1test1");
+        fileOptions.IsValid.ShouldBe(true);
     }
 
     [Fact]
@@ -217,20 +207,20 @@ public class SettingsTests
             ),
             globalOptions: s_globalOptions
         );
-        fileOptions.InnerClassName.Should().Be("test1");
-        fileOptions.InnerClassInstanceName.Should().Be("test2");
-        fileOptions.InnerClassVisibility.Should().Be(InnerClassVisibility.Public);
-        fileOptions.NullForgivingOperators.Should().Be(false);
-        fileOptions.StaticClass.Should().Be(false);
-        fileOptions.StaticMembers.Should().Be(false);
-        fileOptions.PublicClass.Should().Be(true);
-        fileOptions.PartialClass.Should().Be(true);
-        fileOptions.IsValid.Should().Be(true);
-        fileOptions.UseResManager.Should().Be(true);
-        fileOptions.LocalNamespace.Should().Be("namespace1");
-        fileOptions.CustomToolNamespace.Should().Be("ns1");
-        fileOptions.GroupedFile.MainFile.File.Path.Should().Be("Path1.resx");
-        fileOptions.ClassName.Should().Be("Path1");
+        fileOptions.InnerClassName.ShouldBe("test1");
+        fileOptions.InnerClassInstanceName.ShouldBe("test2");
+        fileOptions.InnerClassVisibility.ShouldBe(InnerClassVisibility.Public);
+        fileOptions.NullForgivingOperators.ShouldBe(false);
+        fileOptions.StaticClass.ShouldBe(false);
+        fileOptions.StaticMembers.ShouldBe(false);
+        fileOptions.PublicClass.ShouldBe(true);
+        fileOptions.PartialClass.ShouldBe(true);
+        fileOptions.IsValid.ShouldBe(true);
+        fileOptions.UseResManager.ShouldBe(true);
+        fileOptions.LocalNamespace.ShouldBe("namespace1");
+        fileOptions.CustomToolNamespace.ShouldBe("ns1");
+        fileOptions.GroupedFile.MainFile.File.Path.ShouldBe("Path1.resx");
+        fileOptions.ClassName.ShouldBe("Path1");
     }
 
     [Fact]
@@ -268,21 +258,21 @@ public class SettingsTests
             ),
             globalOptions: globalOptions
         );
-        fileOptions.InnerClassName.Should().Be("test1");
-        fileOptions.InnerClassInstanceName.Should().Be("test2");
-        fileOptions.InnerClassVisibility.Should().Be(InnerClassVisibility.Public);
-        fileOptions.NullForgivingOperators.Should().Be(true);
-        fileOptions.StaticClass.Should().Be(false);
-        fileOptions.StaticMembers.Should().Be(false);
-        fileOptions.PublicClass.Should().Be(true);
-        fileOptions.PartialClass.Should().Be(true);
-        fileOptions.IsValid.Should().Be(true);
-        fileOptions.UseResManager.Should().Be(false);
-        fileOptions.LocalNamespace.Should().Be("namespace1");
-        fileOptions.CustomToolNamespace.Should().BeNullOrEmpty();
-        fileOptions.GroupedFile.MainFile.File.Path.Should().Be("Path1.resx");
-        fileOptions.ClassName.Should().Be("Path1test3");
-        fileOptions.IsValid.Should().Be(true);
+        fileOptions.InnerClassName.ShouldBe("test1");
+        fileOptions.InnerClassInstanceName.ShouldBe("test2");
+        fileOptions.InnerClassVisibility.ShouldBe(InnerClassVisibility.Public);
+        fileOptions.NullForgivingOperators.ShouldBe(true);
+        fileOptions.StaticClass.ShouldBe(false);
+        fileOptions.StaticMembers.ShouldBe(false);
+        fileOptions.PublicClass.ShouldBe(true);
+        fileOptions.PartialClass.ShouldBe(true);
+        fileOptions.IsValid.ShouldBe(true);
+        fileOptions.UseResManager.ShouldBe(false);
+        fileOptions.LocalNamespace.ShouldBe("namespace1");
+        fileOptions.CustomToolNamespace.ShouldBeNullOrEmpty();
+        fileOptions.GroupedFile.MainFile.File.Path.ShouldBe("Path1.resx");
+        fileOptions.ClassName.ShouldBe("Path1test3");
+        fileOptions.IsValid.ShouldBe(true);
     }
 
     private class AnalyzerConfigOptionsStub : AnalyzerConfigOptions

@@ -13,7 +13,7 @@ public static class Utilities
                 return false;
             }
 
-            if (languageName.StartsWith("qps-", StringComparison.Ordinal))
+            if (languageName!.StartsWith("qps-", StringComparison.Ordinal))
             {
                 return true;
             }

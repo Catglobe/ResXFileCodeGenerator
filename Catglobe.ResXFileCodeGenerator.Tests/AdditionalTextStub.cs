@@ -1,7 +1,4 @@
-﻿using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.Text;
-
-namespace Catglobe.ResXFileCodeGenerator.Tests;
+﻿namespace Catglobe.ResXFileCodeGenerator.Tests;
 
 internal class AdditionalTextStub : AdditionalText
 {

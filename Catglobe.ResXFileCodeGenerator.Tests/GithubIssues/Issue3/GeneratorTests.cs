@@ -1,9 +1,4 @@
-﻿using System.Xml;
-using FluentAssertions;
-using Xunit;
-using static System.Guid;
-
-namespace Catglobe.ResXFileCodeGenerator.Tests.GithubIssues.Issue3;
+﻿namespace Catglobe.ResXFileCodeGenerator.Tests.GithubIssues.Issue3;
 
 public class GeneratorTests
 {
@@ -118,8 +113,8 @@ public static class CommonMessages
 				StaticMembers = true
 			}
 		);
-		source.ErrorsAndWarnings.Should().BeNullOrEmpty();
-		source.SourceCode.ReplaceLineEndings().Should().Be(expected.ReplaceLineEndings());
+		source.ErrorsAndWarnings.ShouldBeEmpty();
+		source.SourceCode.ReplaceLineEndings().ShouldBe(expected.ReplaceLineEndings());
 	}
 
 	[Fact]
@@ -206,6 +201,9 @@ public static class CommonMessages
 			NullForgivingOperators = false,
 			StaticClass = true
 		};
-		generator.Invoking(subject => subject.Generate(options)).Should().Throw<XmlException>();
+		Should.Throw<XmlException>(() =>
+		{
+			generator.Generate(options);
+		});
 	}
 }

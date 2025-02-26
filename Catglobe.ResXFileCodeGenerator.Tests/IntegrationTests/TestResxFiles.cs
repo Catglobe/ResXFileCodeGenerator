@@ -1,8 +1,4 @@
-﻿using System.Globalization;
-using FluentAssertions;
-using Xunit;
-
-namespace Catglobe.ResXFileCodeGenerator.Tests.IntegrationTests;
+﻿namespace Catglobe.ResXFileCodeGenerator.Tests.IntegrationTests;
 
 public class TestResxFiles
 {
@@ -10,29 +6,29 @@ public class TestResxFiles
     public void TestNormalResourceGen()
     {
         Thread.CurrentThread.CurrentUICulture = new CultureInfo("da");
-        Test1.CreateDate.Should().Be("OldestDa");
+        Test1.CreateDate.ShouldBe("OldestDa");
         Thread.CurrentThread.CurrentUICulture = new CultureInfo("en");
-        Test1.CreateDate.Should().Be("Oldest");
+        Test1.CreateDate.ShouldBe("Oldest");
         Thread.CurrentThread.CurrentUICulture = new CultureInfo("ch");
-        Test1.CreateDate.Should().Be("Oldest");
+        Test1.CreateDate.ShouldBe("Oldest");
         Thread.CurrentThread.CurrentUICulture = new CultureInfo("en-us");
-        Test1.CreateDate.Should().Be("OldestEnUs");
+        Test1.CreateDate.ShouldBe("OldestEnUs");
         Thread.CurrentThread.CurrentUICulture = new CultureInfo("da-DK");
-        Test1.CreateDate.Should().Be("OldestDaDK");
+        Test1.CreateDate.ShouldBe("OldestDaDK");
     }
     [Fact]
     public void TestCodeGenResourceGen()
     {
         Thread.CurrentThread.CurrentUICulture = new CultureInfo("da");
-        Test2.CreateDate.Should().Be("OldestDa");
+        Test2.CreateDate.ShouldBe("OldestDa");
         Thread.CurrentThread.CurrentUICulture = new CultureInfo("en");
-        Test2.CreateDate.Should().Be("Oldest");
+        Test2.CreateDate.ShouldBe("Oldest");
         Thread.CurrentThread.CurrentUICulture = new CultureInfo("ch");
-        Test2.CreateDate.Should().Be("Oldest");
+        Test2.CreateDate.ShouldBe("Oldest");
         Thread.CurrentThread.CurrentUICulture = new CultureInfo("en-us");
-        Test2.CreateDate.Should().Be("OldestEnUs");
+        Test2.CreateDate.ShouldBe("OldestEnUs");
         Thread.CurrentThread.CurrentUICulture = new CultureInfo("da-DK");
-        Test2.CreateDate.Should().Be("OldestDaDK");
+        Test2.CreateDate.ShouldBe("OldestDaDK");
     }
 
 }

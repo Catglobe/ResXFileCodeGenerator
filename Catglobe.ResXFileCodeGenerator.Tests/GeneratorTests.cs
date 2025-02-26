@@ -1,9 +1,4 @@
-﻿using FluentAssertions;
-using Microsoft.CodeAnalysis;
-using Xunit;
-using static System.Guid;
-
-namespace Catglobe.ResXFileCodeGenerator.Tests;
+﻿namespace Catglobe.ResXFileCodeGenerator.Tests;
 
 public class GeneratorTests
 {
@@ -132,8 +127,8 @@ using System.Resources;
                 StaticMembers = staticMembers
             }
         );
-        ErrorsAndWarnings.Should().BeNullOrEmpty();
-        SourceCode.ReplaceLineEndings().Should().Be(expected.ReplaceLineEndings());
+        ErrorsAndWarnings.ShouldBeEmpty();
+        SourceCode.ReplaceLineEndings().ShouldBe(expected.ReplaceLineEndings());
     }
 
     private static void GenerateInner(
@@ -202,8 +197,8 @@ using System.Resources;
                 InnerClassInstanceName = innerClassInstanceName
             }
         );
-        ErrorsAndWarnings.Should().BeNullOrEmpty();
-        SourceCode.ReplaceLineEndings().Should().Be(expected.ReplaceLineEndings());
+        ErrorsAndWarnings.ShouldBeEmpty();
+        SourceCode.ReplaceLineEndings().ShouldBe(expected.ReplaceLineEndings());
     }
 
     [Fact]
@@ -473,8 +468,8 @@ public static class CommonMessages
                 StaticMembers = true
             }
         );
-        ErrorsAndWarnings.Should().BeNullOrEmpty();
-        SourceCode.ReplaceLineEndings().Should().Be(expected.ReplaceLineEndings());
+        ErrorsAndWarnings.ShouldBeEmpty();
+        SourceCode.ReplaceLineEndings().ShouldBe(expected.ReplaceLineEndings());
     }
 
     [Fact]
@@ -530,8 +525,8 @@ public static class CommonMessages
                 StaticMembers = true
             }
         );
-        ErrorsAndWarnings.Should().BeNullOrEmpty();
-        SourceCode.ReplaceLineEndings().Should().Be(expected.ReplaceLineEndings());
+        ErrorsAndWarnings.ShouldBeEmpty();
+        SourceCode.ReplaceLineEndings().ShouldBe(expected.ReplaceLineEndings());
     }
 
     [Fact]
@@ -565,12 +560,12 @@ public static class CommonMessages
             }
         );
         var errs = ErrorsAndWarnings.ToList();
-        errs.Should().NotBeNull();
-        errs.Should().HaveCount(1);
-        errs[0].Id.Should().Be("CatglobeResXFileCodeGenerator001");
-        errs[0].Severity.Should().Be(DiagnosticSeverity.Warning);
-        errs[0].GetMessage().Should().Contain("DupKey");
-        errs[0].Location.GetLineSpan().StartLinePosition.Line.Should().Be(5);
+        errs.ShouldNotBeNull();
+        errs.Count.ShouldBe(1);
+        errs[0].Id.ShouldBe("CatglobeResXFileCodeGenerator001");
+        errs[0].Severity.ShouldBe(DiagnosticSeverity.Warning);
+        errs[0].GetMessage().ShouldContain("DupKey");
+        errs[0].Location.GetLineSpan().StartLinePosition.Line.ShouldBe(5);
     }
 
     [Fact]
@@ -601,25 +596,25 @@ public static class CommonMessages
             }
         );
         var errs = ErrorsAndWarnings.ToList();
-        errs.Should().NotBeNull();
-        errs.Should().HaveCount(1);
-        errs[0].Id.Should().Be("CatglobeResXFileCodeGenerator002");
-        errs[0].Severity.Should().Be(DiagnosticSeverity.Warning);
-        errs[0].GetMessage().Should().Contain("CommonMessages");
-        errs[0].Location.GetLineSpan().StartLinePosition.Line.Should().Be(2);
+        errs.ShouldNotBeNull();
+        errs.Count.ShouldBe(1);
+        errs[0].Id.ShouldBe("CatglobeResXFileCodeGenerator002");
+        errs[0].Severity.ShouldBe(DiagnosticSeverity.Warning);
+        errs[0].GetMessage().ShouldContain("CommonMessages");
+        errs[0].Location.GetLineSpan().StartLinePosition.Line.ShouldBe(2);
     }
 
     [Fact]
     public void GetLocalNamespace_ShouldNotGenerateIllegalNamespace()
     {
         var ns = Utilities.GetLocalNamespace("resx", "asd.asd", "path", "name", "root");
-        ns.Should().Be("root");
+        ns.ShouldBe("root");
     }
 
     [Fact]
     public void ResxFileName_ShouldNotGenerateIllegalClassnames()
     {
         var ns = Utilities.GetClassNameFromPath("test.cshtml.resx");
-        ns.Should().Be("test");
+        ns.ShouldBe("test");
     }
 }

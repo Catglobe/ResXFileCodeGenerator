@@ -1,7 +1,4 @@
-﻿using FluentAssertions;
-using Xunit;
-
-namespace Catglobe.ResXFileCodeGenerator.Tests;
+﻿namespace Catglobe.ResXFileCodeGenerator.Tests;
 
 public class HelperGeneratorTests
 {
@@ -39,9 +36,9 @@ internal static partial class Helpers
     };
 }
 ";
-        errorsAndWarnings.Should().BeNullOrEmpty();
-        generatedFileName.Should().Be("Catglobe.ResXFileCodeGenerator.1030_6.g.cs");
-        sourceCode.Should().BeEquivalentTo(expected);
+        errorsAndWarnings.ShouldBeEmpty();
+        generatedFileName.ShouldBe("Catglobe.ResXFileCodeGenerator.1030_6.g.cs");
+        sourceCode.ShouldBeEquivalentTo(expected);
     }
     [Fact]
     public void CanGenerateEmptyCombo()
@@ -65,8 +62,8 @@ internal static partial class Helpers
     };
 }
 ";
-        errorsAndWarnings.Should().BeNullOrEmpty();
-        generatedFileName.Should().Be("Catglobe.ResXFileCodeGenerator..g.cs");
-        sourceCode.Should().Be(expected);
+        errorsAndWarnings.ShouldBeEmpty();
+        generatedFileName.ShouldBe("Catglobe.ResXFileCodeGenerator..g.cs");
+        sourceCode.ShouldBe(expected);
     }
 }

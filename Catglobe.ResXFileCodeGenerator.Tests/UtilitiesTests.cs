@@ -1,7 +1,4 @@
-﻿using FluentAssertions;
-using Xunit;
-
-namespace Catglobe.ResXFileCodeGenerator.Tests;
+﻿namespace Catglobe.ResXFileCodeGenerator.Tests;
 
 public class UtilitiesTests
 {
@@ -22,7 +19,7 @@ public class UtilitiesTests
     [InlineData("folder with .. space", "folder_with_._space")]
     public void SanitizeNamespace(string input, string expected)
     {
-        Utilities.SanitizeNamespace(input).Should().Be(expected);
+        Utilities.SanitizeNamespace(input).ShouldBe(expected);
     }
 
     [Theory]
@@ -32,7 +29,7 @@ public class UtilitiesTests
     [InlineData("..Ns", ".Ns")]
     public void SanitizeNamespaceWithoutFirstCharRules(string input, string expected)
     {
-        Utilities.SanitizeNamespace(input, false).Should().Be(expected);
+        Utilities.SanitizeNamespace(input, false).ShouldBe(expected);
     }
 
 }
