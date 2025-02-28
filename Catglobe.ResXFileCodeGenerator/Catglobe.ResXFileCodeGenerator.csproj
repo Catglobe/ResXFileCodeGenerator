@@ -3,6 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
 	  <IncludeBuildOutput>false</IncludeBuildOutput>
+		<Description>Converts Resx files into ultra fast runtime lookups using Source Generator</Description>
     <LangVersion>latest</LangVersion>
     <Nullable>enable</Nullable>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
@@ -22,11 +23,9 @@
 	  <IsRoslynComponent>true</IsRoslynComponent>
 	  <EnforceExtendedAnalyzerRules>true</EnforceExtendedAnalyzerRules>
 	  <CheckEolTargetFramework>false</CheckEolTargetFramework>
-		<IncludeReferencedProjects>true</IncludeReferencedProjects>
 
 	  <PublishRepositoryUrl>true</PublishRepositoryUrl>
 	  <EmbedUntrackedSources>false</EmbedUntrackedSources>
-	  <IncludeSymbols>true</IncludeSymbols>
 	  <DebugType>portable</DebugType>
 	  <SymbolPackageFormat>snupkg</SymbolPackageFormat>
 	  <NuGetAudit>true</NuGetAudit>
@@ -34,7 +33,6 @@
 	  <NuGetAuditLevel>low</NuGetAuditLevel>
 	  <DeterministicSourcePaths>true</DeterministicSourcePaths>
 	  <PackageReadmeFile>README.md</PackageReadmeFile>
-	  <AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
   </PropertyGroup>
 
   <ItemGroup>
@@ -45,13 +43,19 @@
 		  <None Include="..\README.md" Pack="true" PackagePath="" />
   </ItemGroup>
 
+	<ItemDefinitionGroup>
+		<PackageReference>
+			<PrivateAssets>all</PrivateAssets>
+		</PackageReference>
+	</ItemDefinitionGroup>
+
   <ItemGroup>
 		<PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.12.0" />
     <PackageReference Include="Microsoft.CodeAnalysis.Analyzers" Version="3.11.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Catglobe.ResXFileCodeGenerator.Attributes\Catglobe.ResXFileCodeGenerator.Attributes.csproj" PrivateAssets="All" />
+    <ProjectReference Include="..\Catglobe.ResXFileCodeGenerator.Attributes\Catglobe.ResXFileCodeGenerator.Attributes.csproj" />
   </ItemGroup>
 
   <ItemGroup>
