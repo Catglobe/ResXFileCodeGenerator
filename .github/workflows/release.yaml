@@ -27,6 +27,10 @@ jobs:
         with:
           cache: npm
           node-version: 'lts/*'
+      - name: Setup .NET
+        uses: actions/setup-dotnet@3951f0dfe7a07e2313ec93c75700083e2005cbab # v4
+        with:
+          dotnet-version: '9.0.x'
       - name: Install dependencies
         run: npm clean-install
       - name: Test
