@@ -1,0 +1,73 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Catglobe.ResXFileCodeGenerator.Attributes</name>
+    </assembly>
+    <members>
+        <member name="T:Catglobe.ResXFileCodeGenerator.ResxSettingsAttribute">
+            <summary>
+            Attribute force generation of matching resx files to this class instead of a class matching the filename.
+            </summary>
+        </member>
+        <member name="M:Catglobe.ResXFileCodeGenerator.ResxSettingsAttribute.#ctor">
+            <summary>
+            Attribute force generation of matching resx files to this class instead of a class matching the filename.
+            </summary>
+        </member>
+        <member name="P:Catglobe.ResXFileCodeGenerator.ResxSettingsAttribute.StaticMembers">
+            <summary>
+            Set if the class should have static members. Default is true.
+            </summary>
+        </member>
+        <member name="P:Catglobe.ResXFileCodeGenerator.ResxSettingsAttribute.MembersVisibility">
+            <summary>
+            Set the visibility of the members. Default is private.
+            </summary>
+        </member>
+        <member name="P:Catglobe.ResXFileCodeGenerator.ResxSettingsAttribute.ForEnum">
+            <summary>
+            Set if it should add a helper to get translations for Enum members of the given type
+            </summary>
+        </member>
+        <member name="T:Catglobe.ResXFileCodeGenerator.Visibility">
+            <summary>
+            Visibility for the generated class/properties
+            </summary>
+        </member>
+        <member name="F:Catglobe.ResXFileCodeGenerator.Visibility.NotSet">
+            <summary>
+            Used to indicate that the visibility is set elsewhere, or use default
+            </summary>
+        </member>
+        <member name="F:Catglobe.ResXFileCodeGenerator.Visibility.NotGenerated">
+            <summary>
+            For inner classes, indicates that the inner class should not be generated
+            </summary>
+        </member>
+        <member name="F:Catglobe.ResXFileCodeGenerator.Visibility.Public">
+            <summary>
+            Public visibility
+            </summary>
+        </member>
+        <member name="F:Catglobe.ResXFileCodeGenerator.Visibility.Internal">
+            <summary>
+            Internal visibility
+            </summary>
+        </member>
+        <member name="F:Catglobe.ResXFileCodeGenerator.Visibility.Private">
+            <summary>
+            Private visibility
+            </summary>
+        </member>
+        <member name="F:Catglobe.ResXFileCodeGenerator.Visibility.Protected">
+            <summary>
+            Protected visibility
+            </summary>
+        </member>
+        <member name="F:Catglobe.ResXFileCodeGenerator.Visibility.SameAsOuter">
+            <summary>
+            For inner classes, use the same visibility as the outer class
+            </summary>
+        </member>
+    </members>
+</doc>

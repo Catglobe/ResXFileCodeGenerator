@@ -1,5 +1,5 @@
 # ResXFileCodeGenerator
-ResX Designer Source Generator. Generates strongly-typed resource classes for looking up localized strings.
+Converts Resx files into ultra fast runtime lookups using Source Generator.
 
 ## Usage
 
@@ -94,7 +94,7 @@ And if your enum isn’t entirely covered by translations, the generator will ki
 
 ### Notice
 
-Remember: the ResxSettings attribute can only be applied once per basename. If you try to use it in, say, both Myfile.Razor.cs and Myfile.Razor, the generator won’t know which one to trust. This is a necessary technical constraint to keep everything consistent.
+Remember: the `ResxSettings` attribute can only be applied once per basename. If you try to use it in, say, both Myfile.Razor.cs and Myfile.Razor, the generator won’t know which one to trust. This is a necessary technical constraint to keep everything consistent.
 
 ### Optimizations
 

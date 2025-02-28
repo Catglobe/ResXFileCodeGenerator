@@ -1,6 +1,6 @@
 ﻿namespace Catglobe.ResXFileCodeGenerator;
 
-public sealed record GlobalOptions // this must be a record or implement IEquatable<T>
+internal sealed record GlobalOptions // this must be a record or implement IEquatable<T>
 {
     public string InnerClassInstanceName { get; }
     public bool StaticMembers { get; }

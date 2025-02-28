@@ -107,7 +107,7 @@ internal sealed record SymbolReference(
 /// An equatable value representing type identity.
 /// </summary>
 [DebuggerDisplay("Name = {Name}")]
-public readonly struct TypeRef(ITypeSymbol type) : IEquatable<TypeRef>
+internal readonly struct TypeRef(ITypeSymbol type) : IEquatable<TypeRef>
 {
 	public string Name { get; } = type.Name;
 

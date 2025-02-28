@@ -4,8 +4,13 @@
 		<TargetFramework>netstandard2.0</TargetFramework>
 		<Nullable>enable</Nullable>
 		<RootNamespace>Catglobe.ResXFileCodeGenerator</RootNamespace>
-		<IsPackable>false</IsPackable>
+		<IsPackable>true</IsPackable>
 		<LangVersion>latest</LangVersion>
+		<GenerateDocumentationFile>True</GenerateDocumentationFile>
+		<IncludeSymbols>true</IncludeSymbols>
+		<DebugType>portable</DebugType>
+		<DeterministicSourcePaths>true</DeterministicSourcePaths>
+
 	</PropertyGroup>
 
 </Project>

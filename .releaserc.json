@@ -36,7 +36,8 @@
       "@droidsolutions-oss/semantic-release-nuget",
 		{
 			"projectPath": "Catglobe.ResXFileCodeGenerator/Catglobe.ResXFileCodeGenerator.csproj",
-			"nugetServer": "https://api.nuget.org/v3/index.json"
+			"nugetServer": "https://api.nuget.org/v3/index.json",
+			"includeSymbols": true
 		}
     ],
     "@semantic-release/github"

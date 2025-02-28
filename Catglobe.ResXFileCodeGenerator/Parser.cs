@@ -40,7 +40,7 @@ internal static class Parser
 
 	    var (symbolReference, error) = SymbolReference.From(symbol, context.SemanticModel, decl, ct);
 	    if (error is not null)
-			return (null, (error, classSettings.Item1, symbol.Name));
+			return (null, (error, classSettings.Item1, symbol.ToDisplayString(SymbolDisplayFormat.CSharpErrorMessageFormat)));
 
 		return (new(classSettings.Item2!, classSettings.Item1!, symbolReference!), null);
     }

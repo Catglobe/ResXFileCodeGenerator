@@ -5,32 +5,36 @@
 	  <IncludeBuildOutput>false</IncludeBuildOutput>
     <LangVersion>latest</LangVersion>
     <Nullable>enable</Nullable>
-    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Authors>Catglobe</Authors>
+	  <Copyright>Copyright © Catglobe</Copyright>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/Catglobe/ResXFileCodeGenerator</PackageProjectUrl>
     <RepositoryUrl>https://github.com/Catglobe/ResXFileCodeGenerator</RepositoryUrl>
-    <Description>Converts Resx files into ultra fast runtime lookups using Source Generator.</Description>
+	  <PackageTags>resx attribute generator generation codegen codegenerator codegeneration catglobe</PackageTags>
+	  <RepositoryType>git</RepositoryType> 
 		<PackageId>Catglobe.ResXFileCodeGenerator</PackageId>
-    <IncludeBuildOutput>false</IncludeBuildOutput>
-    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+    <IncludeBuildOutput>true</IncludeBuildOutput>
     <NoWarn>$(NoWarn);NU5128</NoWarn>
     <DevelopmentDependency>true</DevelopmentDependency>
-    <Version>4.0.2</Version>
-    <RepositoryCommit>frombuild</RepositoryCommit>
+    <Version>4.0.4</Version>
+    <RepositoryCommit>3ddb8db6dcca4eee808bf0967c5468d8a5111fd8</RepositoryCommit>
     <ImplicitUsings>enable</ImplicitUsings>
 	  <IsRoslynComponent>true</IsRoslynComponent>
 	  <EnforceExtendedAnalyzerRules>true</EnforceExtendedAnalyzerRules>
+	  <CheckEolTargetFramework>false</CheckEolTargetFramework>
 
 	  <PublishRepositoryUrl>true</PublishRepositoryUrl>
 	  <EmbedUntrackedSources>false</EmbedUntrackedSources>
+	  <IncludeSymbols>true</IncludeSymbols>
+	  <DebugType>portable</DebugType>
 	  <SymbolPackageFormat>snupkg</SymbolPackageFormat>
 	  <NuGetAudit>true</NuGetAudit>
 	  <NuGetAuditMode>all</NuGetAuditMode>
 	  <NuGetAuditLevel>low</NuGetAuditLevel>
 	  <DeterministicSourcePaths>true</DeterministicSourcePaths>
 	  <PackageReadmeFile>README.md</PackageReadmeFile>
-	  <DevelopmentDependency>true</DevelopmentDependency>
+	  <GenerateDocumentationFile>True</GenerateDocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>
@@ -41,14 +45,8 @@
 		  <None Include="..\README.md" Pack="true" PackagePath="" />
   </ItemGroup>
 
-  <ItemDefinitionGroup>
-    <PackageReference>
-      <PrivateAssets>all</PrivateAssets>
-    </PackageReference>
-  </ItemDefinitionGroup>
-
   <ItemGroup>
-    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.12.0" />
+		<PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.12.0" />
     <PackageReference Include="Microsoft.CodeAnalysis.Analyzers" Version="3.11.0" />
   </ItemGroup>
 
@@ -61,6 +59,8 @@
   <ItemGroup>
 	  <None Include="$(OutputPath)\$(AssemblyName).dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
 	  <None Include="$(OutputPath)\Catglobe.ResXFileCodeGenerator.Attributes.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
+	  <None Include="$(OutputPath)\Catglobe.ResXFileCodeGenerator.Attributes.xml" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
 	  <None Include="$(OutputPath)\Catglobe.ResXFileCodeGenerator.Attributes.dll" Pack="true" PackagePath="lib\netstandard2.0" Visible="true" />
+	  <None Include="$(OutputPath)\Catglobe.ResXFileCodeGenerator.Attributes.xml" Pack="true" PackagePath="lib\netstandard2.0" Visible="true" />
   </ItemGroup>
 </Project>

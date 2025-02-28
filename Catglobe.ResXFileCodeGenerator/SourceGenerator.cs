@@ -5,6 +5,9 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace Catglobe.ResXFileCodeGenerator;
 
+/// <summary>
+/// The generator
+/// </summary>
 [Generator]
 public class SourceGenerator : IIncrementalGenerator
 {
@@ -19,6 +22,9 @@ public class SourceGenerator : IIncrementalGenerator
 
 	private static readonly IGenerator s_generator = new StringBuilderGenerator();
 
+	/// <summary>
+	/// Initialize the generator
+	/// </summary>
 	public void Initialize(IncrementalGeneratorInitializationContext context)
 	{
 		//graph TD
@@ -116,7 +122,7 @@ public class SourceGenerator : IIncrementalGenerator
 		var matcherClassAttributes = classAttributes.Where(static m => m.Spec is not null).Combine(resxGroupLookup)
 			.Select((x,_)=>MatchWithGroup(x.Left, x.Left!.Spec!.SymbolReference, x.Right)).WithTrackingName("matcherClassAttributes");
 		context.RegisterSourceOutput(matcherClassAttributes.Where(x=>x.Match is null), static (context, info) =>
-			context.ReportDiagnostic(Diagnostic.Create(s_unmatchedAttribute, info.Attr!.Spec!.Location, info.Attr.Spec!.SymbolReference.TheType.FullyQualifiedName)));
+			context.ReportDiagnostic(Diagnostic.Create(s_unmatchedAttribute, info.Attr!.Spec!.Location, info.Attr.Spec!.SymbolReference.TheType.TypeSymbol.ToDisplayString(SymbolDisplayFormat.CSharpErrorMessageFormat))));
 		var matchedClass = matcherClassAttributes.Where(x => x.Match is not null).Collect().WithTrackingName("matchedClass");
 
 		context.RegisterSourceOutput(matchedClass.SelectMany((x,_)=>x), (ctx, file) =>
