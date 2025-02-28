@@ -25,7 +25,6 @@
 	  <PublishRepositoryUrl>true</PublishRepositoryUrl>
 	  <EmbedUntrackedSources>false</EmbedUntrackedSources>
 	  <IncludeSymbols>true</IncludeSymbols>
-	  <SymbolPackageFormat>snupkg</SymbolPackageFormat>
 	  <NuGetAudit>true</NuGetAudit>
 	  <NuGetAuditMode>all</NuGetAuditMode>
 	  <NuGetAuditLevel>low</NuGetAuditLevel>
