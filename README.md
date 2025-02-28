@@ -47,7 +47,7 @@ public partial class Z<T1> {
     }
 }
 ```
-No more wrestling with naming conventions — the power is now in your hands!
+No more wrestling with naming conventions — the power is now in your hands! 
 
 ### Introducting `ResxSettingsAttribute` For Enums
 
