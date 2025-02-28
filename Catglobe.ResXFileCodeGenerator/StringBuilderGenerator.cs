@@ -258,10 +258,10 @@ internal sealed partial class StringBuilderGenerator : IGenerator
 		    {
 			    if (fallback is not null && !fallback.ContainsKey(entry.key))
 				    errorsAndWarnings.Add(Diagnostic.Create(s_spuriousKey,
-					    GetMemberLocation(options, entry.line, entry.key), entry.key));
+					    GetMemberLocation(lang, entry.line, entry.key), entry.key));
 			    else if (dictionary.ContainsKey(entry.key))
 				    errorsAndWarnings.Add(Diagnostic.Create(s_duplicateWarning,
-					    GetMemberLocation(options, entry.line, entry.key), entry.key));
+					    GetMemberLocation(lang, entry.line, entry.key), entry.key));
 			    else
 				    dictionary.Add(entry.key, (entry.value, entry.line));
 		    }
@@ -295,9 +295,9 @@ internal sealed partial class StringBuilderGenerator : IGenerator
 	    }
     }
 
-    private static Location GetMemberLocation(FileOptions fileOptions, IXmlLineInfo line, string memberName) =>
+    private static Location GetMemberLocation(ResxFile fileOptions, IXmlLineInfo line, string memberName) =>
 	    Location.Create(
-		    filePath: fileOptions.GroupedFile.MainFile.File.Path,
+		    filePath: fileOptions.File.Path,
 		    textSpan: new(),
 		    lineSpan: new(
 			    start: new(line.LineNumber - 1, line.LinePosition - 1),
@@ -335,7 +335,7 @@ internal sealed partial class StringBuilderGenerator : IGenerator
         {
             errorsAndWarnings.Add(Diagnostic.Create(
                 descriptor: s_memberSameAsClassWarning,
-                location: GetMemberLocation(options, line, memberName), memberName
+                location: GetMemberLocation(options.GroupedFile.MainFile, line, memberName), memberName
             ));
             return false;
         }
