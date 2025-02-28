@@ -100,6 +100,12 @@ Remember: the ResxSettings attribute can only be applied once per basename. If y
 
 We’ve supercharged the evaluation chain to boost generator’s memoization engine! Now, it regenerates code far less often during your editing sessions—meaning a faster, more responsive experience every time you code.
 
+### Upgrade from older versions
+
+You may need to change your package reference to have `PrivateAssets="all"` such as this, otherwise the compiler may not be able to find the new Attribute:
+
+`<PackageReference Include="Catglobe.ResXFileCodeGenerator" Version="4.0.1" PrivateAssets="all" />`
+
 ## New in version 3
 
 * The generator now utilizes the IIncrementalGenerator API to instantly update the generated code, thus giving you instant intellisense.

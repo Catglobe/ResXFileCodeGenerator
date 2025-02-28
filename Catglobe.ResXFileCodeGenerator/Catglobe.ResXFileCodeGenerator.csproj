@@ -13,15 +13,25 @@
     <Description>Converts Resx files into ultra fast runtime lookups using Source Generator.</Description>
 		<PackageId>Catglobe.ResXFileCodeGenerator</PackageId>
     <IncludeBuildOutput>false</IncludeBuildOutput>
-    <IncludeSymbols>false</IncludeSymbols>
     <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
     <NoWarn>$(NoWarn);NU5128</NoWarn>
     <DevelopmentDependency>true</DevelopmentDependency>
-    <Version>3.3.0</Version>
+    <Version>4.0.2</Version>
     <RepositoryCommit>frombuild</RepositoryCommit>
     <ImplicitUsings>enable</ImplicitUsings>
 	  <IsRoslynComponent>true</IsRoslynComponent>
 	  <EnforceExtendedAnalyzerRules>true</EnforceExtendedAnalyzerRules>
+
+	  <PublishRepositoryUrl>true</PublishRepositoryUrl>
+	  <EmbedUntrackedSources>false</EmbedUntrackedSources>
+	  <IncludeSymbols>true</IncludeSymbols>
+	  <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+	  <NuGetAudit>true</NuGetAudit>
+	  <NuGetAuditMode>all</NuGetAuditMode>
+	  <NuGetAuditLevel>low</NuGetAuditLevel>
+	  <DeterministicSourcePaths>true</DeterministicSourcePaths>
+	  <PackageReadmeFile>README.md</PackageReadmeFile>
+	  <DevelopmentDependency>true</DevelopmentDependency>
   </PropertyGroup>
 
   <ItemGroup>
@@ -29,6 +39,7 @@
       <Pack>true</Pack>
       <PackagePath>build\</PackagePath>
     </None>
+		  <None Include="..\README.md" Pack="true" PackagePath="" />
   </ItemGroup>
 
   <ItemDefinitionGroup>
