@@ -5,7 +5,7 @@
 	  <IncludeBuildOutput>false</IncludeBuildOutput>
     <LangVersion>latest</LangVersion>
     <Nullable>enable</Nullable>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
     <Authors>Catglobe</Authors>
 	  <Copyright>Copyright © Catglobe</Copyright>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
@@ -14,7 +14,6 @@
 	  <PackageTags>resx attribute generator generation codegen codegenerator codegeneration catglobe</PackageTags>
 	  <RepositoryType>git</RepositoryType> 
 		<PackageId>Catglobe.ResXFileCodeGenerator</PackageId>
-    <IncludeBuildOutput>true</IncludeBuildOutput>
     <NoWarn>$(NoWarn);NU5128</NoWarn>
     <DevelopmentDependency>true</DevelopmentDependency>
     <Version>4.0.4</Version>
@@ -23,6 +22,7 @@
 	  <IsRoslynComponent>true</IsRoslynComponent>
 	  <EnforceExtendedAnalyzerRules>true</EnforceExtendedAnalyzerRules>
 	  <CheckEolTargetFramework>false</CheckEolTargetFramework>
+		<IncludeReferencedProjects>true</IncludeReferencedProjects>
 
 	  <PublishRepositoryUrl>true</PublishRepositoryUrl>
 	  <EmbedUntrackedSources>false</EmbedUntrackedSources>
@@ -34,7 +34,7 @@
 	  <NuGetAuditLevel>low</NuGetAuditLevel>
 	  <DeterministicSourcePaths>true</DeterministicSourcePaths>
 	  <PackageReadmeFile>README.md</PackageReadmeFile>
-	  <GenerateDocumentationFile>True</GenerateDocumentationFile>
+	  <AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
   </PropertyGroup>
 
   <ItemGroup>
@@ -58,7 +58,9 @@
 	  <None Include="$(OutputPath)\$(AssemblyName).dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
 	  <None Include="$(OutputPath)\Catglobe.ResXFileCodeGenerator.Attributes.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
 	  <None Include="$(OutputPath)\Catglobe.ResXFileCodeGenerator.Attributes.xml" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
+	  <None Include="$(OutputPath)\Catglobe.ResXFileCodeGenerator.Attributes.pdb" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
 	  <None Include="$(OutputPath)\Catglobe.ResXFileCodeGenerator.Attributes.dll" Pack="true" PackagePath="lib\netstandard2.0" Visible="true" />
 	  <None Include="$(OutputPath)\Catglobe.ResXFileCodeGenerator.Attributes.xml" Pack="true" PackagePath="lib\netstandard2.0" Visible="true" />
+	  <None Include="$(OutputPath)\Catglobe.ResXFileCodeGenerator.Attributes.pdb" Pack="true" PackagePath="lib\netstandard2.0" Visible="true" />
   </ItemGroup>
 </Project>

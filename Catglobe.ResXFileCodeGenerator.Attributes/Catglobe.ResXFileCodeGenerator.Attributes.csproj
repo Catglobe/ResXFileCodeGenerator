@@ -10,6 +10,7 @@
 		<IncludeSymbols>true</IncludeSymbols>
 		<DebugType>portable</DebugType>
 		<DeterministicSourcePaths>true</DeterministicSourcePaths>
+		<IncludeBuildOutput>true</IncludeBuildOutput>
 
 	</PropertyGroup>
 
