@@ -97,4 +97,21 @@ public static class Utilities
             ? char.IsDigit(sanitizedNs[0]) ? $"_{sanitizedNs}" : sanitizedNs
             : sanitizedNs;
     }
+
+	public static bool BasenameFromPath(string fullPath, [MaybeNullWhen(false)]out string basename, [MaybeNullWhen(false)]out string file)
+	{
+		basename = null!;
+		file = null!;
+		if (Path.GetFileName(fullPath) is not { } filename || Path.GetDirectoryName(fullPath) is not { } path) return false;
+		//extract basename and iso from path...
+		//x.y.z.resx has basename x and culture null.
+		//x.y.z.resx -> (x,null)
+		//x.y.z.nn.resx -> (x,nn)
+		//x.y.z.nn-CC.resx -> (x,nn-CC)
+		//z.resx -> (z,null)
+		//z.nn.resx -> (z,nn)
+		basename = path + Path.DirectorySeparatorChar + (filename.IndexOf('.') is var idx && idx < 0 ? filename : filename.Substring(0, idx));
+		file = filename;
+		return true;
+	}
 }

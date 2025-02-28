@@ -138,7 +138,7 @@ using global::System.Resources;
         bool nullForgivingOperators = false,
         bool staticMembers = true,
         string innerClassName = "inner",
-        InnerClassVisibility innerClassVisibility = InnerClassVisibility.SameAsOuter,
+        Visibility innerClassVisibility = Visibility.SameAsOuter,
         string innerClassInstanceName = ""
     )
     {

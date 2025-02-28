@@ -24,6 +24,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "workflows", "workflows", "{
 		.github\workflows\release.yaml = .github\workflows\release.yaml
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Catglobe.ResXFileCodeGenerator.Attributes", "Catglobe.ResXFileCodeGenerator.Attributes\Catglobe.ResXFileCodeGenerator.Attributes.csproj", "{D9A74028-3962-4E37-8D0B-64A706F220EB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -38,6 +40,10 @@ Global
 		{47BDEBDC-42BF-4A8E-9825-FC5ECC844542}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{47BDEBDC-42BF-4A8E-9825-FC5ECC844542}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{47BDEBDC-42BF-4A8E-9825-FC5ECC844542}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D9A74028-3962-4E37-8D0B-64A706F220EB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D9A74028-3962-4E37-8D0B-64A706F220EB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D9A74028-3962-4E37-8D0B-64A706F220EB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D9A74028-3962-4E37-8D0B-64A706F220EB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

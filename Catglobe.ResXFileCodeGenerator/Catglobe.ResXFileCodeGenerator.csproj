@@ -2,6 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+	  <IncludeBuildOutput>false</IncludeBuildOutput>
     <LangVersion>latest</LangVersion>
     <Nullable>enable</Nullable>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
@@ -10,6 +11,7 @@
     <PackageProjectUrl>https://github.com/Catglobe/ResXFileCodeGenerator</PackageProjectUrl>
     <RepositoryUrl>https://github.com/Catglobe/ResXFileCodeGenerator</RepositoryUrl>
     <Description>Converts Resx files into ultra fast runtime lookups using Source Generator.</Description>
+		<PackageId>Catglobe.ResXFileCodeGenerator</PackageId>
     <IncludeBuildOutput>false</IncludeBuildOutput>
     <IncludeSymbols>false</IncludeSymbols>
     <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
@@ -40,6 +42,15 @@
     <PackageReference Include="Microsoft.CodeAnalysis.Analyzers" Version="3.11.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Catglobe.ResXFileCodeGenerator.Attributes\Catglobe.ResXFileCodeGenerator.Attributes.csproj" PrivateAssets="All" />
+  </ItemGroup>
+
   <Import Project="$(MSBuildProjectName).targets" />
 
+  <ItemGroup>
+	  <None Include="$(OutputPath)\$(AssemblyName).dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
+	  <None Include="$(OutputPath)\Catglobe.ResXFileCodeGenerator.Attributes.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
+	  <None Include="$(OutputPath)\Catglobe.ResXFileCodeGenerator.Attributes.dll" Pack="true" PackagePath="lib\netstandard2.0" Visible="true" />
+  </ItemGroup>
 </Project>

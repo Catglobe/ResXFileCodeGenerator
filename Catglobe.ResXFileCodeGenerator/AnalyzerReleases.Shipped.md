@@ -19,4 +19,9 @@ CatglobeResXFileCodeGenerator004 | ResXFileCodeGenerator | Warning | StringBuild
 CatglobeResXFileCodeGenerator005 | ResXFileCodeGenerator | Warning | StringBuilderGenerator
 CatglobeResXFileCodeGenerator006 | ResXFileCodeGenerator | Error | StringBuilderGenerator
 CatglobeResXFileCodeGenerator007 | ResXFileCodeGenerator | Warning | StringBuilderGenerator
+CatglobeResXFileCodeGenerator008 | ResXFileCodeGenerator | Warning | StringBuilderGenerator
+CatglobeResXFileCodeGenerator009 | ResXFileCodeGenerator | Error | StringBuilderGenerator
+CatglobeResXFileCodeGenerator010 | ResXFileCodeGenerator | Error | StringBuilderGenerator
+CatglobeResXFileCodeGenerator011 | ResXFileCodeGenerator | Error | StringBuilderGenerator
+CatglobeResXFileCodeGenerator012 | ResXFileCodeGenerator | Info | StringBuilderGenerator
 

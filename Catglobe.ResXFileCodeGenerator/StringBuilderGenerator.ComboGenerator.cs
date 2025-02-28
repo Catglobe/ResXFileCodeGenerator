@@ -100,14 +100,14 @@ internal sealed partial class StringBuilderGenerator : IGenerator
 
 	private static void AppendCodeUsings(StringBuilder builder)
 	{
-		builder.AppendLineLF("using static Catglobe.ResXFileCodeGenerator.Helpers;");
+		builder.AppendLineLF("using static global::Catglobe.ResXFileCodeGenerator.Helpers;");
 		builder.AppendLineLF();
 	}
 
 	private void GenerateCode(
 		(Dictionary<string, (string, IXmlLineInfo)> main, List<Dictionary<string, (string, IXmlLineInfo)>> subfiles)
 			parsed, FileOptions options,
-		string indent,
+		int indent,
 		string containerClassName,
 		StringBuilder builder,
 		List<Diagnostic> errorsAndWarnings,
@@ -136,7 +136,7 @@ internal sealed partial class StringBuilderGenerator : IGenerator
 			}
 
 			builder.Append(" => GetString_");
-			builder.Append(FunctionNamePostFix(options.GroupedFile.SubFiles.CultureInfos));
+			builder.Append(FunctionNamePostFix(options.GroupedFile.SubFiles));
 			builder.Append("(");
 			builder.Append(SymbolDisplay.FormatLiteral(value, true));
 

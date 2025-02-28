@@ -5,7 +5,7 @@ public sealed record GlobalOptions // this must be a record or implement IEquata
     public string InnerClassInstanceName { get; }
     public bool StaticMembers { get; }
     public string InnerClassName { get; }
-    public InnerClassVisibility InnerClassVisibility { get; }
+    public Visibility InnerClassVisibility { get; }
     public bool PartialClass { get; }
     public string? RootNamespace { get; }
     public string ProjectFullPath { get; }
@@ -74,10 +74,10 @@ public sealed record GlobalOptions // this must be a record or implement IEquata
             ClassNamePostfix = classNamePostfixSwitch;
         }
 
-        InnerClassVisibility = InnerClassVisibility.NotGenerated;
+        InnerClassVisibility = Visibility.NotGenerated;
         if (
             options.TryGetValue("build_property.ResXFileCodeGenerator_InnerClassVisibility", out var innerClassVisibilitySwitch) &&
-            Enum.TryParse(innerClassVisibilitySwitch, true, out InnerClassVisibility v)
+            Enum.TryParse(innerClassVisibilitySwitch, true, out Visibility v)
         )
         {
             InnerClassVisibility = v;

@@ -6,5 +6,6 @@ internal static class GroupResxFiles
 	    resx.ToLookup(x=>x.Basename).Select(x => new ResxGroup(x.ToList()));
 
     public static ImmutableArray<CultureInfoCombo> DetectChildCombos(IReadOnlyList<ResxGroup> groupedAdditionalFiles) =>
-	    [..groupedAdditionalFiles.Select(x => x.SubFiles).Distinct()];
+	    [..groupedAdditionalFiles.Select(x => new CultureInfoCombo(x.SubFiles)).Distinct().OrderBy(x=>x.ToString())];
+
 }

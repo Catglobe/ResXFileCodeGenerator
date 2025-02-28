@@ -4,7 +4,7 @@
 /// Note: Equality takes into consideration Iso property only
 /// </summary>
 /// <param name="CultureInfos">Already ordered list of files</param>
-internal sealed record CultureInfoCombo(IReadOnlyList<ResxFile> CultureInfos)
+internal sealed record CultureInfoCombo(ImmutableEquatableArray<ResxFile> CultureInfos)
 {
 	//public static CultureInfoCombo Empty = new([]);
 	public bool Equals(CultureInfoCombo? other)
@@ -28,4 +28,6 @@ internal sealed record CultureInfoCombo(IReadOnlyList<ResxFile> CultureInfos)
             return val;
         } 
     }
+
+	public override string ToString() => string.Join("_", CultureInfos.Select(x => x.Culture!.LCID));
 }

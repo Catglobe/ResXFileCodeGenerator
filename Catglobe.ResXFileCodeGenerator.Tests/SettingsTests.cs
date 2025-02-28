@@ -25,7 +25,7 @@ public class SettingsTests
         globalOptions.InnerClassName.ShouldBeNullOrEmpty();
         globalOptions.ClassNamePostfix.ShouldBeNullOrEmpty();
         globalOptions.InnerClassInstanceName.ShouldBeNullOrEmpty();
-        globalOptions.InnerClassVisibility.ShouldBe(InnerClassVisibility.NotGenerated);
+        globalOptions.InnerClassVisibility.ShouldBe(Visibility.NotGenerated);
         globalOptions.NullForgivingOperators.ShouldBe(false);
         globalOptions.StaticClass.ShouldBe(true);
         globalOptions.StaticMembers.ShouldBe(true);
@@ -65,7 +65,7 @@ public class SettingsTests
         globalOptions.InnerClassName.ShouldBe("test1");
         globalOptions.InnerClassInstanceName.ShouldBe("test2");
         globalOptions.ClassNamePostfix.ShouldBe("test3");
-        globalOptions.InnerClassVisibility.ShouldBe(InnerClassVisibility.Public);
+        globalOptions.InnerClassVisibility.ShouldBe(Visibility.Public);
         globalOptions.NullForgivingOperators.ShouldBe(true);
         globalOptions.StaticClass.ShouldBe(false);
         globalOptions.UseResManager.ShouldBe(true);
@@ -88,7 +88,7 @@ public class SettingsTests
         );
         fileOptions.InnerClassName.ShouldBeNullOrEmpty();
         fileOptions.InnerClassInstanceName.ShouldBeNullOrEmpty();
-        fileOptions.InnerClassVisibility.ShouldBe(InnerClassVisibility.NotGenerated);
+        fileOptions.InnerClassVisibility.ShouldBe(Visibility.NotGenerated);
         fileOptions.NullForgivingOperators.ShouldBe(false);
         fileOptions.StaticClass.ShouldBe(true);
         fileOptions.StaticMembers.ShouldBe(true);
@@ -141,7 +141,7 @@ public class SettingsTests
         );
         fileOptions.InnerClassName.ShouldBeNullOrEmpty();
         fileOptions.InnerClassInstanceName.ShouldBeNullOrEmpty();
-        fileOptions.InnerClassVisibility.ShouldBe(InnerClassVisibility.NotGenerated);
+        fileOptions.InnerClassVisibility.ShouldBe(Visibility.NotGenerated);
         fileOptions.NullForgivingOperators.ShouldBe(false);
         fileOptions.StaticClass.ShouldBe(true);
         fileOptions.StaticMembers.ShouldBe(true);
@@ -197,7 +197,7 @@ public class SettingsTests
         );
         fileOptions.InnerClassName.ShouldBe("test1");
         fileOptions.InnerClassInstanceName.ShouldBe("test2");
-        fileOptions.InnerClassVisibility.ShouldBe(InnerClassVisibility.Public);
+        fileOptions.InnerClassVisibility.ShouldBe(Visibility.Public);
         fileOptions.NullForgivingOperators.ShouldBe(false);
         fileOptions.StaticClass.ShouldBe(false);
         fileOptions.StaticMembers.ShouldBe(false);
@@ -245,7 +245,7 @@ public class SettingsTests
         );
         fileOptions.InnerClassName.ShouldBe("test1");
         fileOptions.InnerClassInstanceName.ShouldBe("test2");
-        fileOptions.InnerClassVisibility.ShouldBe(InnerClassVisibility.Public);
+        fileOptions.InnerClassVisibility.ShouldBe(Visibility.Public);
         fileOptions.NullForgivingOperators.ShouldBe(true);
         fileOptions.StaticClass.ShouldBe(false);
         fileOptions.StaticMembers.ShouldBe(false);

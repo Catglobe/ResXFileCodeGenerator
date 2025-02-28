@@ -23,7 +23,7 @@ internal sealed record ResxGroup
 	/// <summary>
 	/// Basename is the name of the file without culture and filetype
 	/// </summary>
-	public string Basename { get; }
+	public string Basename => MainFile?.Basename!;
 
 	/// <summary>
 	/// MainFile is the file without culture
@@ -33,7 +33,7 @@ internal sealed record ResxGroup
 	/// <summary>
 	/// SubFiles are ordered by culture LCID
 	/// </summary>
-	public CultureInfoCombo SubFiles { get; }
+	public ImmutableEquatableArray<ResxFile> SubFiles { get; }
 
 	/// <summary>
 	/// Error is set if the group is invalid
@@ -42,9 +42,8 @@ internal sealed record ResxGroup
 
 	public ResxGroup(IReadOnlyList<ResxFile> resx)
 	{
-		Basename = null!;
 		MainFile = null!;
-		SubFiles = null!;
+		SubFiles = ImmutableEquatableArray<ResxFile>.Empty;
 		try
 		{
 			var mainFile = resx.SingleOrDefault(x => x.Culture is null);
@@ -59,7 +58,6 @@ internal sealed record ResxGroup
 			}
 
 			MainFile = mainFile;
-			Basename = mainFile.Basename;
 		}
 		catch
 		{

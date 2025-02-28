@@ -21,6 +21,24 @@ public class GroupResxFilesTests
     }
 
     [Fact]
+    public void CompareResxGroup_SameRoot_SameSubFiles_DifferentOrder_DiffContent()
+    {
+	    var v1 = new ResxGroup([
+		    ResxFile.From(new AdditionalTextStub(@"D:\src\xhg\y\Areas\CaModule\Pages\IdfgControlCenter.resx", "a"))!,
+		    ResxFile.From(new AdditionalTextStub(@"D:\src\xhg\y\Areas\CaModule\Pages\IdfgControlCenter.da.resx", "a"))!,
+		    ResxFile.From(new AdditionalTextStub(@"D:\src\xhg\y\Areas\CaModule\Pages\IdfgControlCenter.vi.resx", "a"))!,
+	    ]);
+
+	    var v2 = new ResxGroup([
+		    ResxFile.From(new AdditionalTextStub(@"D:\src\xhg\y\Areas\CaModule\Pages\IdfgControlCenter.resx", "a"))!,
+		    ResxFile.From(new AdditionalTextStub(@"D:\src\xhg\y\Areas\CaModule\Pages\IdfgControlCenter.vi.resx", "a"))!,
+		    ResxFile.From(new AdditionalTextStub(@"D:\src\xhg\y\Areas\CaModule\Pages\IdfgControlCenter.da.resx", "b"))!,
+	    ]);
+
+	    v1.ShouldNotBe(v2);
+    }
+
+    [Fact]
     public void CompareResxGroup_SameRoot_DiffSubFilesNames()
     {
 	    var v1 = new ResxGroup([

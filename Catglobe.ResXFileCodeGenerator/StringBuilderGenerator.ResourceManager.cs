@@ -5,7 +5,7 @@ internal sealed partial class StringBuilderGenerator : IGenerator
     private void GenerateResourceManager(
 	    (Dictionary<string, (string, IXmlLineInfo)> main, List<Dictionary<string, (string, IXmlLineInfo)>> subfiles)
 		    parsed, FileOptions options,
-	    string indent,
+	    int indent,
 	    string containerClassName,
 	    StringBuilder builder,
 	    List<Diagnostic> errorsAndWarnings,
@@ -32,7 +32,7 @@ internal sealed partial class StringBuilderGenerator : IGenerator
     }
     
     private static void CreateMember(
-        string indent,
+        int indent,
         StringBuilder builder,
         FileOptions options,
         string name,
@@ -81,19 +81,19 @@ internal sealed partial class StringBuilderGenerator : IGenerator
 
     private static void GenerateResourceManagerMembers(
         StringBuilder builder,
-        string indent,
+        int indent,
         string containerClassName,
         FileOptions options
     )
     {
-        builder.Append(indent);
+	    builder.Append(' ', indent);
         builder.Append("private static ");
         builder.Append(nameof(ResourceManager));
         builder.Append("? ");
         builder.Append(Constants.s_resourceManagerVariable);
         builder.AppendLineLF(";");
 
-        builder.Append(indent);
+        builder.Append(' ', indent);
         builder.Append("public static ");
         builder.Append(nameof(ResourceManager));
         builder.Append(" ");
@@ -108,7 +108,7 @@ internal sealed partial class StringBuilderGenerator : IGenerator
         builder.Append(containerClassName);
         builder.AppendLineLF(").Assembly);");
 
-        builder.Append(indent);
+        builder.Append(' ', indent);
         builder.Append("public ");
         builder.Append(options.StaticMembers ? "static " : string.Empty);
         builder.Append(nameof(CultureInfo));

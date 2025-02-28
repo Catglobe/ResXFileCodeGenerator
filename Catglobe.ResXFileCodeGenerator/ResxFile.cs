@@ -2,15 +2,31 @@
 
 namespace Catglobe.ResXFileCodeGenerator;
 
-internal sealed record ResxFile(string Basename, CultureInfo? Culture, string? CultureIso, AdditionalText File)
+internal sealed record ResxFile(string Basename, CultureInfo? Culture, string? CultureIso, SourceText Content, ImmutableEquatableArray<byte> ContentHash, AdditionalText File) : IEquatable<ResxFile>
 {
-	public bool Equals(ResxFile? other) => Basename.Equals(other?.Basename) && ReferenceEquals(Culture, other?.Culture);
+	public bool Equals(ResxFile? other)
+	{
+		if (other is null)
+		{
+			return false;
+		}
+
+		if (ReferenceEquals(this, other))
+		{
+			return true;
+		}
+
+		return Basename == other.Basename && CultureIso == other.CultureIso && ContentHash.Equals(other.ContentHash);
+	}
 
 	public override int GetHashCode()
 	{
 		unchecked
 		{
-			return (Basename.GetHashCode() * 397) ^ (Culture != null ? Culture.GetHashCode() : 0);
+			var hashCode = Basename.GetHashCode();
+			hashCode = (hashCode * 397) ^ (CultureIso != null ? CultureIso.GetHashCode() : 0);
+			hashCode = (hashCode * 397) ^ ContentHash.GetHashCode();
+			return hashCode;
 		}
 	}
 
@@ -18,25 +34,22 @@ internal sealed record ResxFile(string Basename, CultureInfo? Culture, string? C
 
 	public static ResxFile? From(AdditionalText file, CancellationToken ct = default)
 	{
-		if (Path.GetFileName(file.Path) is not { } filename || Path.GetDirectoryName(file.Path) is not { } path) return null;
-		//extract basename and iso from path...
-		//x.y.z.resx has basename x and culture null.
-		//x.y.z.resx -> (x,null)
-		//x.y.z.nn.resx -> (x,nn)
-		//x.y.z.nn-CC.resx -> (x,nn-CC)
-		//z.resx -> (z,null)
-		//z.nn.resx -> (z,nn)
-		var basename = path + Path.DirectorySeparatorChar + (filename.IndexOf('.') is var idx && idx < 0 ? filename : filename.Substring(0, idx));
+		if (!Utilities.BasenameFromPath(file.Path, out var basename, out var filename))
+			return null;
+		var content = file.GetText(ct)?? SourceText.From("");
+		var contentHash = content.GetContentHash();
 
 		var beforeDotResx = filename.Length - ".resx".Length - 1;
 		var lastDot = filename.LastIndexOf('.', beforeDotResx);
+		//main file
 		if (lastDot <= 0)
-			return new(basename, null, null, file);
+			return new(basename, null, null, content, contentHash, file);
 
 		//check if lastDot to beforeDotResx is a culture
 		var possibleCulture = filename.Substring(lastDot + 1, beforeDotResx - lastDot);
 		var cultureInfo = ValidLanguagesCache.GetOrAdd(possibleCulture, IsValidLanguageName);
-		return new(basename, cultureInfo, cultureInfo is not null ? possibleCulture.ToLowerInvariant() : null, file);
+
+		return new(basename, cultureInfo, cultureInfo is not null ? possibleCulture.ToLowerInvariant() : null, content, contentHash, file);
 	}
 
 	private static readonly ConcurrentDictionary<string, CultureInfo?> ValidLanguagesCache = new();

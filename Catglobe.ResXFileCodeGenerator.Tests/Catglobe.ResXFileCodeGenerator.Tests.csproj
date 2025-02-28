@@ -6,6 +6,7 @@
     <LangVersion>latest</LangVersion>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+	  <EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles>
   </PropertyGroup>
 
   <Import Project="../Catglobe.ResXFileCodeGenerator/build/Catglobe.ResXFileCodeGenerator.props" />
@@ -32,12 +33,19 @@
 	  <EmbeddedResource Update="**/*.??.resx;**/*.??-??.resx">
 		  <DependentUpon>$([System.IO.Path]::GetFileNameWithoutExtension('%(FileName)')).resx</DependentUpon>
 	  </EmbeddedResource>
-	  <EmbeddedResource Update="IntegrationTests\Test2.resx">
-		  <UseResManager>true</UseResManager>
+	  <EmbeddedResource Update="IntegrationTests\**\*.resx">
+	    <UseResManager>true</UseResManager>
+	  </EmbeddedResource>
+	  <EmbeddedResource Update="IntegrationTests\Test1.resx">
+		  <UseResManager>false</UseResManager>
+	  </EmbeddedResource>
+	  <EmbeddedResource Update="IntegrationTests\TestDaWhenDaDk2.resx">
+		  <UseResManager>false</UseResManager>
 	  </EmbeddedResource>
   </ItemGroup>
 
 	<ItemGroup>
+		<ProjectReference Include="..\Catglobe.ResXFileCodeGenerator.Attributes\Catglobe.ResXFileCodeGenerator.Attributes.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="true" />
 		<ProjectReference Include="..\Catglobe.ResXFileCodeGenerator\Catglobe.ResXFileCodeGenerator.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="true" />
 	</ItemGroup>
 </Project>

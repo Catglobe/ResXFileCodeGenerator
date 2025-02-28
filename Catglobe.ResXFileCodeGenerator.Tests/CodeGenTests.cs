@@ -224,7 +224,7 @@ public class CodeGenTests
 // ------------------------------------------------------------------------------
 #nullable enable
 namespace Resources;
-using static Catglobe.ResXFileCodeGenerator.Helpers;
+using static global::Catglobe.ResXFileCodeGenerator.Helpers;
 
 {(publicClass ? "public" : "internal")}{(partial ? " partial" : string.Empty)}{(staticClass ? " static" : string.Empty)} class ActivityEntrySortRuleNames
 {{

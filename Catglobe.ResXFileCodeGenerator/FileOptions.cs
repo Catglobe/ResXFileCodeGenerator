@@ -5,7 +5,7 @@ internal sealed record FileOptions
 	public ResxGroup GroupedFile { get; init; } = null!;
 	public string InnerClassInstanceName { get; init; } = string.Empty;
     public string InnerClassName { get; init; } = string.Empty;
-    public InnerClassVisibility InnerClassVisibility { get; init; } = InnerClassVisibility.NotGenerated;
+    public Visibility InnerClassVisibility { get; init; } = Visibility.NotGenerated;
     public bool PartialClass { get; init; }
     public bool StaticMembers { get; init; } = true;
     public bool StaticClass { get; init; }
@@ -17,8 +17,11 @@ internal sealed record FileOptions
     public bool UseResManager { get; init; }
     public string EmbeddedFilename { get; init; } = null!;
     public bool IsValid { get; init; } = true;
+	//this gets mutated
+    public bool Matched { get; set; }
+    public string MemberVisibility { get; init; } = "public";
 
-	//unittest
+    //unittest
     internal FileOptions() { }
 
     internal FileOptions(
@@ -97,8 +100,8 @@ internal sealed record FileOptions
         InnerClassVisibility = globalOptions.InnerClassVisibility;
         if (
             options.TryGetValue("build_metadata.EmbeddedResource.InnerClassVisibility", out var innerClassVisibilitySwitch) &&
-            Enum.TryParse(innerClassVisibilitySwitch, true, out InnerClassVisibility v) &&
-            v != InnerClassVisibility.SameAsOuter
+            Enum.TryParse(innerClassVisibilitySwitch, true, out Visibility v) &&
+            v != Visibility.SameAsOuter
         )
         {
             InnerClassVisibility = v;
