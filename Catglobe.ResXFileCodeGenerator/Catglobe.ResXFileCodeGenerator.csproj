@@ -16,7 +16,7 @@
 	  <RepositoryType>git</RepositoryType> 
 		<PackageId>Catglobe.ResXFileCodeGenerator</PackageId>
     <NoWarn>$(NoWarn);NU5128</NoWarn>
-    <DevelopmentDependency>true</DevelopmentDependency>
+    <!--<DevelopmentDependency>true</DevelopmentDependency>--><!--This does not work with the .Attributes dll, nuget changes the way it adds-->
     <Version>4.0.4</Version>
     <RepositoryCommit>3ddb8db6dcca4eee808bf0967c5468d8a5111fd8</RepositoryCommit>
     <ImplicitUsings>enable</ImplicitUsings>
