@@ -9,6 +9,8 @@ jobs:
   track_issue:
     runs-on: cg-linux
     steps:
+      - name: Save actions cache
+        uses: Catglobe/save-actions-cache@v1
     # Generate token for GitHub app
       - name: Generate token
         id: generate-token
