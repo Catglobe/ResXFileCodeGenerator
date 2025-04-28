@@ -1,4 +1,6 @@
-﻿namespace Catglobe.ResXFileCodeGenerator;
+﻿using System.Xml.Linq;
+
+namespace Catglobe.ResXFileCodeGenerator;
 
 internal sealed partial class StringBuilderGenerator : IGenerator
 {
@@ -97,7 +99,7 @@ internal sealed partial class StringBuilderGenerator : IGenerator
 			builder.Append(memberName.Key);
 			builder.Append('"');
 			builder.Append(" => ");
-			builder.Append(memberName.Key);
+			builder.Append(s_invalidMemberNameSymbols.Replace(memberName.Key, "_"));
 			builder.AppendLineLF(",");
 		}
 		builder.Append(' ', indent);
