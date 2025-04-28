@@ -9,7 +9,7 @@
 	  <EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles>
   </PropertyGroup>
 
-  <Import Project="../Catglobe.ResXFileCodeGenerator/buildtransitive/Catglobe.ResXFileCodeGenerator.props" />
+  <Import Project="../Catglobe.ResXFileCodeGenerator/buildTransitive/Catglobe.ResXFileCodeGenerator.props" />
 
   <ItemGroup>
 	  <PackageReference Include="Shouldly" Version="4.3.0" />
