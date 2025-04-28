@@ -20,5 +20,11 @@ internal sealed record SettingsData
 	/// Set if it should add a helper to get translations for Enum members of the given type
 	/// </summary>
 	public INamedTypeSymbol? ForEnum { get; set; }
+
+	/// <summary>
+	/// Similar to ForEnum, but more generic in that all keys are available
+	/// </summary>
+	public bool GenerateLookup{ get; set; }
+
 }
 

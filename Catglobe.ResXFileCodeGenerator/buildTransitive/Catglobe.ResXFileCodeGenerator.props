@@ -9,6 +9,7 @@
     <CompilerVisibleProperty Include="MSBuildProjectName" />
     <CompilerVisibleProperty Include="RootNamespace" />
     <CompilerVisibleProperty Include="CustomToolNamespace" />
+    <CompilerVisibleProperty Include="ResXFileCodeGenerator_UseDefaults" />
     <CompilerVisibleProperty Include="ResXFileCodeGenerator_PublicClass" />
     <CompilerVisibleProperty Include="ResXFileCodeGenerator_NullForgivingOperators" />
     <CompilerVisibleProperty Include="ResXFileCodeGenerator_StaticClass" />
@@ -33,4 +34,14 @@
     <CompilerVisibleItemMetadata Include="EmbeddedResource" MetadataName="UseResManager" />
   </ItemGroup>
 
+	<Target Name="PreventMSB3030" DependsOnTargets="ComputeIntermediateSatelliteAssemblies" BeforeTargets="GenerateSatelliteAssemblies">
+		<ItemGroup Condition="'$(ResXFileCodeGenerator_UseDefaults)' == 'true'">
+			<IntermediateSatelliteAssembliesWithTargetPath Remove="@(IntermediateSatelliteAssembliesWithTargetPath)"></IntermediateSatelliteAssembliesWithTargetPath>
+		</ItemGroup>
+	</Target>
+	<Target Name="PreventNU5026" DependsOnTargets="SatelliteDllsProjectOutputGroup" BeforeTargets="_GetBuildOutputFilesWithTfm">
+		<ItemGroup Condition="'$(ResXFileCodeGenerator_UseDefaults)' == 'true'">
+			<SatelliteDllsProjectOutputGroupOutput Remove="@(SatelliteDllsProjectOutputGroupOutput)"></SatelliteDllsProjectOutputGroupOutput>
+		</ItemGroup>
+	</Target>
 </Project>

@@ -4,7 +4,7 @@ public partial class Y
 {
 	internal partial class X
 	{
-		[ResxSettings(ForEnum = typeof(XEnum), MembersVisibility = Visibility.Public)]
+		[ResxSettings(ForEnum = typeof(XEnum), MembersVisibility = Visibility.Public, GenerateLookup = true)]
 		private partial class Z<T3>
 		{
 

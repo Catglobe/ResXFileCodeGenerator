@@ -42,7 +42,9 @@ internal sealed partial class StringBuilderGenerator : IGenerator
 		builder.Append(" string");
 		if (!options.NullForgivingOperators)
 			builder.Append('?');
-		builder.AppendLineLF(" ToString(__ENUM e) => e switch {");
+		builder.Append(" ToString(");
+		builder.Append(enumRef.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat));
+		builder.AppendLineLF(" e) => e switch {");
 		indent += 4;
 		foreach (var memberName in enumRef.MemberNames)
 		{
@@ -63,7 +65,43 @@ internal sealed partial class StringBuilderGenerator : IGenerator
 			builder.AppendLineLF(",");
 		}
 		builder.Append(' ', indent);
-		builder.AppendLineLF("_ => string.Empty,");
+		builder.AppendLineLF(options.NullForgivingOperators ? "_ => string.Empty," : "_ => null,");
+		indent -= 4;
+		builder.Append(' ', indent);
+		builder.AppendLineLF("};");
+		builder.AppendLineLF();
+	}
+	private void GenerateLookup(
+		(Dictionary<string, (string, IXmlLineInfo)> main, List<Dictionary<string, (string, IXmlLineInfo)>> subfiles)
+			parsed, FileOptions options, int indent, StringBuilder builder, List<Diagnostic> errorsAndWarnings, CancellationToken cancellationToken)
+	{
+		builder.Append(' ', indent);
+		builder.AppendLineLF("/// <summary>");
+		builder.Append(' ', indent);
+		builder.AppendLineLF("/// Looks up a localized string for the given key.");
+		builder.Append(' ', indent);
+		builder.AppendLineLF("/// </summary>");
+
+		builder.Append(' ', indent);
+		builder.Append(options.MemberVisibility);
+		builder.Append(options.StaticMembers ? " static" : string.Empty);
+		builder.Append(" string");
+		if (!options.NullForgivingOperators)
+			builder.Append('?');
+		builder.AppendLineLF(" ToString(string key) => key switch {");
+		indent += 4;
+		foreach (var memberName in parsed.main)
+		{
+			builder.Append(' ', indent);
+			builder.Append('"');
+			builder.Append(memberName.Key);
+			builder.Append('"');
+			builder.Append(" => ");
+			builder.Append(memberName.Key);
+			builder.AppendLineLF(",");
+		}
+		builder.Append(' ', indent);
+		builder.AppendLineLF(options.NullForgivingOperators ? "_ => string.Empty," : "_ => null,");
 		indent -= 4;
 		builder.Append(' ', indent);
 		builder.AppendLineLF("};");

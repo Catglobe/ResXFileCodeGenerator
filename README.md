@@ -9,6 +9,12 @@ Install the `Catglobe.ResXFileCodeGenerator` package:
 dotnet add package Catglobe.ResXFileCodeGenerator
 ```
 
+## New in version 4.1
+
+The ResxSettingsAttribute now has a `GenerateLookup` that lets you create a runtime lookup by key `ToString(string key)`, similar to the enum, but just with strings.
+
+The build properties are now exported as buildTransitive for easier integration with other projects.
+
 ## New in version 4
 
 Welcome to ResXFileCodeGenerator v4 — a bold new chapter in resource generation! This release unleashes a suite of innovative features to revolutionize the way you manage your localized strings.

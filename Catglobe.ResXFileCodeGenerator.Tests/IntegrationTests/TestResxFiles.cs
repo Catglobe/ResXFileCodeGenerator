@@ -55,10 +55,17 @@ public class TestResxFiles
 		TestDaWhenDaDk2.CreateDate.ShouldBe("OldestDaDK");
 	}
 
+	[Fact]
+	public void Lookup()
+	{
+		Thread.CurrentThread.CurrentUICulture = new CultureInfo("da");
+		TestLookup.ToString("CreateDate").ShouldBe("OldestDa");
+		Thread.CurrentThread.CurrentUICulture = new CultureInfo("da-DK");
+		TestLookup.ToString("CreateDate").ShouldBe("OldestDa");
+		Thread.CurrentThread.CurrentUICulture = new CultureInfo("en");
+		TestLookup.ToString("CreateDate").ShouldBe("Oldest");
+
+	}
+
 }
 
-[ResxSettings()]
-internal partial class Test32
-{
-	
-}

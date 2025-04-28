@@ -36,7 +36,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Include="build\**">
+    <None Include="buildTransitive\**">
       <Pack>true</Pack>
       <PackagePath>build\</PackagePath>
     </None>

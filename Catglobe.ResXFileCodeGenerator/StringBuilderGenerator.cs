@@ -196,6 +196,8 @@ internal sealed partial class StringBuilderGenerator : IGenerator
         {
 	        if (classSpec.ClassSettings.ForEnum is { } enumRef)
 		        GenerateEnumLookup(parsed.Value, options, enumRef, indent, builder, errorsAndWarnings, cancellationToken);
+	        if (classSpec.ClassSettings.GenerateLookup)
+		        GenerateLookup(parsed.Value, options, indent, builder, errorsAndWarnings, cancellationToken);
 
 
 	        var sr = classSpec.SymbolReference;

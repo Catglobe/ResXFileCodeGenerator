@@ -19,8 +19,14 @@ public class ResxSettingsAttribute() : Attribute
 	public Visibility MembersVisibility { get; set; } = Visibility.Private;
 
 	/// <summary>
-	/// Set if it should add a helper to get translations for Enum members of the given type
+	/// Set if it should add a helper to get translations for Enum members of the given type.
 	/// </summary>
 	public Type? ForEnum { get; set; }
+
+	/// <summary>
+	/// Similar to ForEnum, but more generic in that all keys are available. Notice for very large resx files this may cause compile time performance issues.
+	/// </summary>
+	public bool GenerateLookup { get; set; }
+
 }
 
