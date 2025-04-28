@@ -59,11 +59,11 @@ public class TestResxFiles
 	public void Lookup()
 	{
 		Thread.CurrentThread.CurrentUICulture = new CultureInfo("da");
-		TestLookup.ToString("CreateDate").ShouldBe("OldestDa");
+		TestLookup.ToString("$CreateDate%").ShouldBe("OldestDa");
 		Thread.CurrentThread.CurrentUICulture = new CultureInfo("da-DK");
-		TestLookup.ToString("CreateDate").ShouldBe("OldestDa");
+		TestLookup.ToString("$CreateDate%").ShouldBe("OldestDa");
 		Thread.CurrentThread.CurrentUICulture = new CultureInfo("en");
-		TestLookup.ToString("CreateDate").ShouldBe("Oldest");
+		TestLookup.ToString("$CreateDate%").ShouldBe("Oldest");
 
 	}
 
