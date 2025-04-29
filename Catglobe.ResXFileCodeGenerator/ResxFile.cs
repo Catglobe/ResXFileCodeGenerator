@@ -2,7 +2,7 @@
 
 namespace Catglobe.ResXFileCodeGenerator;
 
-internal sealed record ResxFile(string Basename, CultureInfo? Culture, string? CultureIso, SourceText Content, ImmutableEquatableArray<byte> ContentHash, AdditionalText File) : IEquatable<ResxFile>
+internal sealed record ResxFile(string Basename, CultureInfo? Culture, string? CultureIso, SourceText Content, ImmutableEquatableArray<byte> ContentHash, AdditionalText File)
 {
 	public bool Equals(ResxFile? other)
 	{
@@ -29,7 +29,7 @@ internal sealed record ResxFile(string Basename, CultureInfo? Culture, string? C
 			return hashCode;
 		}
 	}
-
+	
 	public override string ToString() => $"{nameof(Basename)}: {Basename}, {nameof(CultureIso)}: {CultureIso}, {nameof(Culture)}: {Culture?.LCID}";
 
 	public static ResxFile? From(AdditionalText file, CancellationToken ct = default)

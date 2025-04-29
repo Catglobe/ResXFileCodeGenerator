@@ -171,6 +171,26 @@ public class GroupResxFilesTests
         }
     }
 
+    [Fact]
+    public void ResxFile_EqualityOperators_ShouldWorkCorrectly()
+    {
+        var file1 = new ResxFile("Base1", null, null, SourceText.From("Content1"), ImmutableEquatableArray<byte>.Empty, new AdditionalTextStub("Path1"));
+        var file2 = new ResxFile("Base1", null, null, SourceText.From("Content1"), ImmutableEquatableArray<byte>.Empty, new AdditionalTextStub("Path1"));
+        var file3 = new ResxFile("Base2", null, null, SourceText.From("Content2"), ImmutableEquatableArray<byte>.Empty, new AdditionalTextStub("Path2"));
+        ResxFile? fileNull = null;
+
+        (file1 == file2).ShouldBeTrue();
+        (file1 == file3).ShouldBeFalse();
+        (file1 != file3).ShouldBeTrue();
+        (file1 != file2).ShouldBeFalse();
+
+        // Null checks
+        (file1 == fileNull).ShouldBeFalse();
+        (file1 != fileNull).ShouldBeTrue();
+        (fileNull == null).ShouldBeTrue();
+        (fileNull != null).ShouldBeFalse();
+    }
+
 }
 
 

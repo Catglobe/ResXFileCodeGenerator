@@ -20,6 +20,8 @@ internal sealed record ResxGroup
 		isEnabledByDefault: true
 	);
 
+	private readonly ResxFile? _mainFile;
+
 	/// <summary>
 	/// Basename is the name of the file without culture and filetype
 	/// </summary>
@@ -28,7 +30,7 @@ internal sealed record ResxGroup
 	/// <summary>
 	/// MainFile is the file without culture
 	/// </summary>
-	public ResxFile MainFile { get; }
+	public ResxFile MainFile => _mainFile!;
 
 	/// <summary>
 	/// SubFiles are ordered by culture LCID
@@ -42,7 +44,7 @@ internal sealed record ResxGroup
 
 	public ResxGroup(IReadOnlyList<ResxFile> resx)
 	{
-		MainFile = null!;
+		_mainFile = null;
 		SubFiles = ImmutableEquatableArray<ResxFile>.Empty;
 		try
 		{
@@ -57,7 +59,7 @@ internal sealed record ResxGroup
 				return;
 			}
 
-			MainFile = mainFile;
+			_mainFile = mainFile;
 		}
 		catch
 		{
@@ -84,7 +86,7 @@ internal sealed record ResxGroup
 			return true;
 		}
 
-		return Basename == other.Basename && MainFile.Equals(other.MainFile) && SubFiles.Equals(other.SubFiles);
+		return Basename == other.Basename && _mainFile == other._mainFile && SubFiles.Equals(other.SubFiles);
 	}
 
 	public override int GetHashCode()
@@ -92,7 +94,7 @@ internal sealed record ResxGroup
 		unchecked
 		{
 			var hashCode = Basename.GetHashCode();
-			hashCode = (hashCode * 397) ^ MainFile.GetHashCode();
+			hashCode = (hashCode * 397) ^ (_mainFile?.GetHashCode() ?? 0);
 			hashCode = (hashCode * 397) ^ SubFiles.GetHashCode();
 			return hashCode;
 		}
@@ -100,6 +102,6 @@ internal sealed record ResxGroup
 
 	public override string ToString()
 	{
-		return $"{nameof(MainFile)}: {MainFile}, {nameof(SubFiles)}: {string.Join("; ", SubFiles)}";
+		return $"{nameof(MainFile)}: {_mainFile}, {nameof(SubFiles)}: {string.Join("; ", SubFiles)}";
 	}
 }
