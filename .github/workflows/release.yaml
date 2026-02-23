@@ -35,8 +35,18 @@ jobs:
         run: npm clean-install
       - name: Test
         run: dotnet test -c Release
+
+      # Get a short-lived NuGet API key
+      # https://www.nuget.org/account/trustedpublishing
+      # https://learn.microsoft.com/en-gb/nuget/nuget-org/trusted-publishing
+      - name: NuGet login (OIDC → temp API key)
+        uses: NuGet/login@v1
+        id: nuget
+        with:
+          user: Catglobe
+    
       - name: Release
         run: npx semantic-release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NUGET_TOKEN: ${{ secrets.NUGET_TOKEN }}
+          NUGET_TOKEN: ${{steps.nuget.outputs.NUGET_API_KEY}}
