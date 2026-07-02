@@ -1,6 +1,11 @@
 # ResXFileCodeGenerator
 Converts Resx files into ultra fast runtime lookups using Source Generator.
 
+**AI-assisted setup**: paste this prompt into your AI agent:
+```
+Add latest version of ResXFileCodeGenerator using nuget, and configure using the instructions found here: https://raw.githubusercontent.com/Catglobe/ResXFileCodeGenerator/main/docs/guide/setup.md
+```
+
 ## Usage
 
 Install the `Catglobe.ResXFileCodeGenerator` package:
