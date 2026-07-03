@@ -544,7 +544,7 @@ Add the PackageReference. Use the variant that matches the project type:
 **Library project** (other projects consume this one — prevents generator types from leaking downstream):
 
 ```xml
-<PackageReference Include="Catglobe.ResXFileCodeGenerator" Version="__VERSION__" PrivateAssets="all" />
+<PackageReference Include="Catglobe.ResXFileCodeGenerator" Version="__VERSION__" />
 ```
 
 **Application project** (`.exe`, web app, Blazor — nothing consumes it downstream):
