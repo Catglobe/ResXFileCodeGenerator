@@ -259,7 +259,55 @@ foreach ($group in $byBasename) {
 if ($languages.Count -gt 0) { Write-Output "  Languages: $($languages.Keys -join ', ')" } else { Write-Output "  No culture files" }
 ```
 
-**0.6 Recommendations**
+**0.6 Language distribution analysis**
+
+Projects commonly support one language set for internal/backend code and a larger set for public-facing UI. This step detects whether the codebase has multiple sections with different language requirements — so the SKILL.md can tell agents which files need which languages.
+
+```powershell
+# Build per-directory language sets
+$dirLanguages = @{}
+foreach ($f in $parsedFiles) {
+    if ($f.Culture -eq 'neutral') { continue }
+    $dir = Split-Path $f.FullPath -Parent
+    if (-not $dirLanguages.ContainsKey($dir)) { $dirLanguages[$dir] = @{} }
+    $dirLanguages[$dir][$f.Culture] = $true
+}
+
+# Roll up to high-level areas (top 2 directory levels from workspace root)
+$areaLangs = @{}
+foreach ($dir in $dirLanguages.Keys) {
+    $rel = $dir.Replace($cwd + '\', '')
+    $parts = $rel -split '\\'
+    $areaKey = if ($parts.Count -ge 2) { "$($parts[0])\$($parts[1])" } else { $parts[0] }
+    if (-not $areaLangs.ContainsKey($areaKey)) { $areaLangs[$areaKey] = @{} }
+    foreach ($lang in $dirLanguages[$dir].Keys) { $areaLangs[$areaKey][$lang] = $true }
+}
+
+# Sort areas by language count, find primary (fewest) and secondaries (>2x primary)
+$areaEntries = $areaLangs.Keys | ForEach-Object {
+    [PSCustomObject]@{ Area = $_; Count = $areaLangs[$_].Count; Langs = ($areaLangs[$_].Keys | Sort-Object) -join ', ' }
+} | Sort-Object -Property Count
+
+$primary = $areaEntries | Select-Object -First 1
+$secondaries = $areaEntries | Where-Object { $_.Count -gt $primary.Count * 2 }
+
+Write-Output "=== Language Distribution ==="
+Write-Output "Primary section (baseline, $($primary.Count) languages):"
+Write-Output "  $($primary.Area): $($primary.Langs)"
+
+if ($secondaries) {
+    Write-Output "Secondary sections ($($primary.Count)x+ more languages):"
+    foreach ($s in $secondaries) {
+        Write-Output "  $($s.Area): $($s.Count) languages — $($s.Langs)"
+    }
+    Write-Output "MULTI-SECTION: Language sets differ significantly."
+    Write-Output "  Ask user to name each section (e.g., 'Backend' vs 'Public UI')."
+} else {
+    Write-Output "Single-section: All areas use similar language sets."
+}
+```
+
+**0.7 Recommendations**
 
 | Finding | Action |
 |---------|--------|
@@ -267,11 +315,12 @@ if ($languages.Count -gt 0) { Write-Output "  Languages: $($languages.Keys -join
 | ⚠ **Case mismatches** | Ask user which casing. Add explicit `DependentUpon` per file in `.csproj`. |
 | ✓ **Standalone** | Global settings from Step 1. No user question needed. |
 | ✓ **Framework-dedicated** | Per-file-type overrides (Step 4). No user question needed. |
-| ✓ **Languages** | Confirm with user. Feed into SKILL.md placeholder. |
+| ✓ **Languages** | Confirm with user. If multi-section detected, ask user to name each section. Feed into SKILL.md placeholders (`__PRIMARY_SECTION_NAME__`, `__SECTION_NAME__`, etc.). |
+| ✓ **Single language set** | No multi-section detected. All files use the same languages. Skip Q3 section naming. |
 
 ```
          ┌──────────────────────────────────────┐
-         │     Run 0.1–0.5 discovery scripts    │
+         │     Run 0.1–0.6 discovery scripts    │
          └────────┬─────────────────────────────┘
                   │
     ┌─────────────┼─────────────────┐
@@ -290,7 +339,7 @@ if ($languages.Count -gt 0) { Write-Output "  Languages: $($languages.Keys -join
  └────────┘  └────────────┘  └───────────────────┘
 ```
 
-**0.7 Existing config check**
+**0.8 Existing config check**
 
 ```powershell
 $existingConfigs = @()
@@ -316,7 +365,7 @@ if ($existingConfigs) {
 } else { Write-Output "No existing ResXFileCodeGenerator configuration found." }
 ```
 
-**0.8 Orphaned config detection**
+**0.9 Orphaned config detection**
 
 ```powershell
 $orphanedPatterns = @()
@@ -379,7 +428,7 @@ Always ask after presenting discovery. The user confirms or corrects the finding
 | User says | Action |
 |-----------|--------|
 | "yes" / "correct" / "looks good" / default | Proceed to Quick Setup (or Q1 if "review each"). Discovery is the single source of truth for all subsequent steps. |
-| "no" + correction | Re-run Step 0.0-0.5 discovery scripts with corrected scope. Then re-present. |
+| "no" + correction | Re-run Step 0.1–0.6 discovery scripts with corrected scope. Then re-present. |
 
 Also, if zero `.resx` files were found across a multi-project solution (from Step 0.0 project scan), ask:
 > "I didn't find any `.resx` files yet. You have __PROJECT_COUNT__ projects — which should I set up for translations?"
@@ -447,7 +496,22 @@ Code-gen, project-local visibility, and automatic build-error prevention are alw
 
 #### Q3: What languages do you support and which is the default?
 
-Two parts. Order matters — always ask which is the default, never guess.
+Three parts when multi-section detected; two parts otherwise. Order matters — always ask section naming first if discovery found multiple sections, then which is the default.
+
+**Part 0 — Section naming** (only if Step 0.6 found multi-section):
+
+> "I found different language sets across your codebase:
+> - **__PRIMARY_AREA__**: __PRIMARY_COUNT__ languages — this is the baseline
+> - **__SECONDARY_AREA_1__**: __SECONDARY_COUNT__ languages — __SECONDARY_COUNT__x more
+> 
+> This is common — backend code uses a few core languages while public-facing UI supports many. What should I call each section? (e.g., 'General codebase' and 'Questionnaire editor')"
+
+| User says | Action |
+|-----------|--------|
+| Names provided | Map to `__PRIMARY_SECTION_NAME__` and `__SECTION_NAME__` placeholders |
+| "yes" / "correct" / "looks good" | Use area names as-is: `__PRIMARY_AREA__` → `__PRIMARY_SECTION_NAME__`, etc. |
+
+If only single-section detected, skip Part 0 entirely — Q3 proceeds as Parts 1–2 only.
 
 **Part 1 — All languages:**
 
@@ -459,6 +523,9 @@ If discovery found languages on disk:
 If no languages on disk:
 > "Which languages do you plan to support? (e.g., da, vi, fr, de — I'll handle naming conventions)"
 
+If multi-section, also ask which languages belong to which section:
+> "Which of these apply to **__PRIMARY_SECTION_NAME__** only, and which also apply to **__SECTION_NAME__**?"
+
 **Part 2 — Default language** (always ask, never guess):
 
 > "Which of those is the **default**? (goes in the neutral `.resx` without a culture suffix)"
@@ -469,8 +536,10 @@ Example: user says "Danish, German, Greek" → ask "Which is the default?" → t
 
 | Part | Maps to |
 |------|---------|
+| Section names | `__PRIMARY_SECTION_NAME__`, `__SECTION_NAME__` in SKILL.md |
+| Languages per section | `__PRIMARY_LANGUAGE_LIST__`, `__SECTION_LANGUAGE_LIST__` in SKILL.md |
 | Default language | Neutral `.resx` file (no culture suffix), `__DEFAULT_LANGUAGE__` in SKILL.md |
-| All other languages | `Name.{culture}.resx` files, `__LANGUAGE_FILE_LIST__` in SKILL.md |
+| Scope guidance | `__LANGUAGE_SCOPE_GUIDANCE__` — e.g., "General codebase files only need en/da/vi; editor files need ALL languages." |
 
 ---
 
@@ -592,8 +661,9 @@ Start the file:
 If discovery found `.razor.resx` files:
 
 ```xml
-    <!-- Blazor: resources are private inner classes -->
+    <!-- Blazor: resources are private inner classes, nested under the .razor file -->
     <EmbeddedResource Update="**/*.razor.resx">
+      <DependentUpon>%(FileName)</DependentUpon>
       <PublicClass>true</PublicClass>
       <InnerClassVisibility>private</InnerClassVisibility>
     </EmbeddedResource>
@@ -602,8 +672,9 @@ If discovery found `.razor.resx` files:
 If `.cshtml.resx` files:
 
 ```xml
-    <!-- Razor Pages: non-static, inner class with instance -->
+    <!-- Razor Pages: non-static, inner class with instance, nested under the .cshtml file -->
     <EmbeddedResource Update="**/*.cshtml.resx">
+      <DependentUpon>%(FileName)</DependentUpon>
       <ClassNamePostfix>Model</ClassNamePostfix>
       <StaticMembers>false</StaticMembers>
       <PublicClass>true</PublicClass>
@@ -615,14 +686,15 @@ If `.cshtml.resx` files:
 If `.as?x.resx` files:
 
 ```xml
-    <!-- Legacy ASP.NET WebForms: protected inner class -->
+    <!-- Legacy ASP.NET WebForms: protected inner class, nested under the .as?x file -->
     <EmbeddedResource Update="**/*.as?x.resx">
+      <DependentUpon>%(FileName)</DependentUpon>
       <PublicClass>true</PublicClass>
       <InnerClassVisibility>protected</InnerClassVisibility>
     </EmbeddedResource>
 ```
 
-If discovery found **ambiguous or colliding basenames**, add explicit `DependentUpon` entries per file instead of relying on the wildcard pattern.
+If discovery found **ambiguous or colliding basenames**, add explicit `DependentUpon` entries per file instead of relying on the wildcard pattern. The `%(FileName)` wildcard resolves to the filename without the `.resx` suffix (e.g., `Foo.razor.resx` → `Foo.razor`), which nests the `.resx` under the matching code file in Solution Explorer.
 
 **4b. GenerateResource** (always dual-mode):
 
@@ -719,15 +791,22 @@ templates/resx-skill-template.md
 - **Project**: Save to a skill/rules directory your agent recognizes at the project level. Each agent has its own convention — use yours.
 - **Local**: Save to your agent's user-level skill/config directory. Again, follow your agent's conventions — you know where your skills live better than this guide does. If you are unsure, search for your agent's skill directory conventions, or ask the user which AI agent they're using.
 
+**File structure — critical**: Most agents discover skills as directories, not bare files. Create `{skill-name}/SKILL.md` under the target location, NOT `{skill-name}.md`. Example: `<skills-dir>/resx-file-code-generator/SKILL.md`. A bare `.md` file at `<skills-dir>/resx-file-code-generator.md` will not be recognized.
+
 **Quick reference — key placeholders:**
 
 | Placeholder | Fill with | Example |
 |-------------|-----------|---------|
 | `__PROJECT_NAME__` | Solution or project name | `CatGlobe` |
 | `__DEFAULT_LANGUAGE__` | Neutral .resx language | `English (en)` |
-| `__LANGUAGE_FILE_LIST__` | Each language → its file | `- English → Resources.resx (neutral)\n- Spanish → Resources.es.resx\n- Greek → Resources.el.resx` |
+| `__PRIMARY_SECTION_NAME__` | Name of the main/default section | `General codebase` |
+| `__PRIMARY_LANGUAGE_LIST__` | Core languages for the primary section | `- Danish → Resources.da.resx\n- Vietnamese → Resources.vi.resx` |
+| `__SECONDARY_SECTIONS__` | Repeated block for each additional section (filled from discovery) | See sub-placeholders below |
+| `__SECTION_NAME__` | Name of an additional section from discovery | `Questionnaire editor` |
+| `__SECTION_DIRECTORY__` | Where this section's .resx files live | `Areas/QuestionnaireModule` |
+| `__SECTION_LANGUAGE_LIST__` | Languages for this section | `- Danish → Resources.da.resx\n- Vietnamese → Resources.vi.resx\n- ...` |
+| `__LANGUAGE_SCOPE_GUIDANCE__` | Which sections need which languages | `General codebase files only need en/da/vi; editor files need ALL languages.` |
 | `__RESX_DIRECTORY_EXAMPLE__` | Where .resx files live | `Resources` |
-| `__PATTERN_SECTION__` | Project patterns from discovery | `- 15 Blazor\n- 8 Standalone` |
 
 ---
 
@@ -756,7 +835,7 @@ Re-running is safe:
 
 - **Config files**: Merge with existing content — properties are not overwritten, only added if missing.
 - **NuGet package**: `dotnet add package` is a no-op if already installed. Version upgrades are explicit.
-- **SKILL.md**: Overwritten with latest config values from `templates/resx-skill-template.md`. Each run updates the filled template with the most recent discovery data.
+- **SKILL.md**: Overwritten with latest config values from `templates/resx-skill-template.md`. The file must be at `{skill-name}/SKILL.md` (directory + SKILL.md inside), not a bare `.md` file. Each run updates the filled template with the most recent discovery data.
 - **Build**: A clean build (`dotnet clean && dotnet build`) regenerates everything from source.
 
 ---

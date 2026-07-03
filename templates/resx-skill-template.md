@@ -1,6 +1,6 @@
 ---
 name: resx-file-code-generator
-description: Use when translating, adding translations, or working with .resx files in __PROJECT_NAME__. Triggers: resx, resource file, translation, localization, culture-specific resources, ResxSettingsAttribute, i18n, multilingual strings.
+description: Use when translating, adding translations, or working with .resx files. Triggers: resx, resource file, translation, localization, culture-specific resources, ResxSettingsAttribute, i18n, multilingual strings.
 ---
 
 # ResX Translations — __PROJECT_NAME__
@@ -13,14 +13,18 @@ description: Use when translating, adding translations, or working with .resx fi
 
 ## Languages
 
-Each language maps to a specific file:
+### __PRIMARY_SECTION_NAME__
+
+The default language set used across most of the codebase:
 
 | Language | File | Notes |
 |----------|------|-------|
 | __DEFAULT_LANGUAGE__ | `Name.resx` | Neutral file — no culture suffix. This is the default/fallback. |
-__LANGUAGE_FILE_LIST__
+__PRIMARY_LANGUAGE_LIST__
 
-Adding a new language: create `Name.{culture}.resx` with the culture code (e.g., `da`, `vi`, `fr`, `de`).
+__SECONDARY_SECTIONS__
+
+Adding a new language: create `Name.{culture}.resx` with the culture code. __LANGUAGE_SCOPE_GUIDANCE__
 
 ## Per-file overrides
 
@@ -110,10 +114,6 @@ Rebuild. Accessible as `Resources.KeyName`.
 - **Extra culture key**: a key exists in a culture file but not in the neutral. Either add to neutral or remove from culture.
 - **Duplicate key names**: second `<data>` with the same name is ignored. Use unique names.
 - **Key same as class name**: rename the key or the class — avoid collisions with generated members.
-
-## Project patterns
-
-__PATTERN_SECTION__
 
 ## Do NOT
 
