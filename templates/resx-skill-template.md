@@ -1,6 +1,6 @@
 ---
 name: resx-file-code-generator
-description: Use when translating, adding translations, or working with .resx files. Triggers: resx, resource file, translation, localization, culture-specific resources, ResxSettingsAttribute, i18n, multilingual strings.
+description: "Use when translating, adding translations, or working with .resx files. Triggers: resx, resource file, translation, localization, culture-specific resources, ResxSettingsAttribute, i18n, multilingual strings."
 ---
 
 # ResX Translations — __PROJECT_NAME__
